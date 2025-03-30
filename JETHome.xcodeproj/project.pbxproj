@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		90AF20402D9990430088D06E /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 90AF203F2D9990430088D06E /* Kingfisher */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		90AF1F902D9983800088D06E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90AF20402D9990430088D06E /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +117,7 @@
 			);
 			name = JETHome;
 			packageProductDependencies = (
+				90AF203F2D9990430088D06E /* Kingfisher */,
 			);
 			productName = JETHome;
 			productReference = 90AF1F7F2D99837F0088D06E /* JETHome.app */;
@@ -195,6 +201,9 @@
 			);
 			mainGroup = 90AF1F762D99837F0088D06E;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				90AF20272D998F670088D06E /* XCRemoteSwiftPackageReference "Kingfisher" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 90AF1F802D99837F0088D06E /* Products */;
 			projectDirPath = "";
@@ -558,6 +567,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		90AF20272D998F670088D06E /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.3.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		90AF203F2D9990430088D06E /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 90AF20272D998F670088D06E /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 90AF1F772D99837F0088D06E /* Project object */;
 }

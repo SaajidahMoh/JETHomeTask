@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Kingfisher
 
 
 struct JETView: View {
@@ -24,15 +25,20 @@ struct JETView: View {
         
             ScrollView {
                 Image(systemName: "globe")
+                
                 VStack(alignment: .leading) {
+                    
+                    
                     ForEach(viewController.restaurants.prefix(10), id: \.id){
                         restaurant in
                         VStack(alignment: .leading) {
+                            KFImage(URL(string: "\(restaurant.logoUrl)")!)
                             Text(restaurant.name)
                                 .font(.title)
-                            
+    
                             Text(restaurant.cuisines.map { $0.name }.joined(separator: ", "))
                             Text("\(formatRating(restaurant.rating.starRating)) (\(restaurant.rating.count))")
+                        
                         }
                         
                     }

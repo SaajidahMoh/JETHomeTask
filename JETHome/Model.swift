@@ -14,6 +14,7 @@ struct Restaurant: Decodable {
     let address: Address
     let rating: Rating
     let cuisines: [Cuisine]
+    let logoUrl: String
 }
 struct Address: Decodable {
     let city: String
