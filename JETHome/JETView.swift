@@ -15,6 +15,13 @@ struct JETView: View {
     
     var body: some View {
         VStack {
+            TextField("Enter postcode", text: $viewController.postcode)
+            Button(action: {
+                viewController.fetchRestaurantInfo()
+            }) {
+                Text("Get Restaurants")
+            }
+        
             ScrollView {
                 Image(systemName: "globe")
                 VStack(alignment: .leading) {
@@ -32,11 +39,13 @@ struct JETView: View {
                 }
                 .padding()
             }
-            
         }
+        
+        
         .onAppear {
             viewController.fetchRestaurantInfo()
         }
+    }
     }
     
     func formatRating( _ rating: Float) -> String {
@@ -46,7 +55,6 @@ struct JETView: View {
             let ratingValue = String(format: "%.2f", rating)
             return ratingValue.trimmingCharacters(in: CharacterSet(charactersIn: "0").union(.punctuationCharacters))
         }
-    }
 }
 
 #Preview {
