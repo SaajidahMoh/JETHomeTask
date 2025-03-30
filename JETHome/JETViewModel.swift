@@ -8,18 +8,27 @@ import Foundation
 
 class JETViewModel : ObservableObject {
     @Published var restaurants: [Restaurant] = []
-    @Published var postcode: String = "E10 6EQ"
+    @Published var postcode: String = ""
         //"EC4M7RF"
+    @Published var isLoading: Bool = false
     
     func fetchRestaurantInfo(){
+        guard !postcode.isEmpty else {
+            print ("Enter postcode")
+            return
+    }
+        isLoading = true
+        
         let APIInteraction = justEatAPIInteraction()
         APIInteraction.getRestaurantInfo(postcode:postcode){ restaurants in
             DispatchQueue.main.async {
                 self.restaurants = restaurants
-            
+                self.isLoading = false
             }
         }
     }
+    
+ 
 }
 
 
