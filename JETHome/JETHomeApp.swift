@@ -12,7 +12,8 @@ struct JETHomeApp: App {
     var body: some Scene {
         WindowGroup {
            // ContentView()
-            JETView()
+            //JETView()
+            LocationView()
         }
     }
 }

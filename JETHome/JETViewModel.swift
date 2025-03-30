@@ -27,8 +27,6 @@ class JETViewModel : ObservableObject {
             }
         }
     }
-    
- 
 }
 
 
