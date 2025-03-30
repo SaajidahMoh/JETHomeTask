@@ -63,7 +63,10 @@ struct JETView: View {
                             
                             Text(restaurant.cuisines.map { $0.name }.joined(separator: ", "))
                             Text("\(formatRating(restaurant.rating.starRating)) (\(restaurant.rating.count))")
-        
+                          //  Text("\(formatRating(restaurant.driveDistance))")
+                            Text(restaurant.address.location.coordinates.first.map{"\($0)"} ?? "0.0")
+                            Text(restaurant.address.location.coordinates.last.map{"\($0)"} ?? "0.0")
+                       //     Text(restaurant.address.location)
                         }
                         
                     }
