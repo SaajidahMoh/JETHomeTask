@@ -20,10 +20,19 @@ struct JETView: View {
                 VStack {
                     ForEach(viewController.restaurants.prefix(10), id: \.id){
                         restaurant in
-                        VStack(alignment: .leading) {
+                        VStack {
+                        //(alignment: .leading) {
                             Text(restaurant.name)
                                 .font(.title)
+                                //  .alignment(leading)
+                            
+                            Text(restaurant.cuisines.map { $0.name }.joined(separator: ", "))
+                            ZStack {
+                                Text("\(formatRating(restaurant.rating.starRating)) (\(restaurant.rating.count))")
+                            }
+                           
                         }
+                        
                         
                     }
                 }
@@ -33,6 +42,15 @@ struct JETView: View {
         }
         .onAppear {
             viewController.fetchRestaurantInfo()
+        }
+    }
+    
+    func formatRating( _ rating: Float) -> String {
+        if rating == 0 {
+            return "0"
+        } else {
+            let ratingValue = String(format: "%.2f", rating)
+            return ratingValue.trimmingCharacters(in: CharacterSet(charactersIn: "0").union(.punctuationCharacters))
         }
     }
 }
