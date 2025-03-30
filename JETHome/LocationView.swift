@@ -6,7 +6,7 @@
 // https://medium.com/@desilio/getting-user-location-with-swiftui-1f79d23c2321
 
 import SwiftUI
-
+/**
 struct LocationView: View {
     @StateObject private var locationManager = LocationManager()
     
@@ -34,3 +34,5 @@ struct LocationView: View {
         .padding()
     }
 }
+
+*/

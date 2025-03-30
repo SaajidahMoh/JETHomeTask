@@ -10,11 +10,18 @@ import CoreLocation
 
 final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     
-    @Published var lastKnownLocation: CLLocationCoordinate2D?
+   // @Published var lastKnownLocation: CLLocationCoordinate2D?
     @Published var postcode: String? //Postcode
     
     var manager = CLLocationManager()
     private var geocoder = CLGeocoder() //Geocoder
+    
+    override init() {
+                super.init()
+                manager.delegate = self
+                manager.startUpdatingLocation()
+                checkLocationAuthorization()
+            }
     
     func checkLocationAuthorization() {
         
@@ -36,8 +43,11 @@ final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObje
             
         case .authorizedWhenInUse://This authorization allows you to use all location services and receive location events only when your app is in use
             print("Location authorized when in use")
-            lastKnownLocation = manager.location?.coordinate
-            reverseGeocodeLocation (coordinate: lastKnownLocation)
+            //lastKnownLocation = manager.location?.coordinate
+           // reverseGeocodeLocation (coordinate: lastKnownLocation)
+            if let location = manager.location?.coordinate {
+                                       reverseGeocodeLocation(coordinate: location)
+                                   }
             
         @unknown default:
             print("Location service disabled")
@@ -50,7 +60,10 @@ final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObje
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        lastKnownLocation = locations.first?.coordinate
+        // lastKnownLocation = locations.first?.coordinate
+        if let location = manager.location?.coordinate {
+                                   reverseGeocodeLocation(coordinate: location)
+                               }
     }
     
     // get postcode by reversing geocode

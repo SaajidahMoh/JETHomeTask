@@ -27,6 +27,11 @@ class JETViewModel : ObservableObject {
             }
         }
     }
+    
+    func updatePostcode(_ postcode : String) {
+        self.postcode = postcode
+        fetchRestaurantInfo()
+    }
 }
 
 

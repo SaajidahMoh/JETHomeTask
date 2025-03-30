@@ -13,10 +13,36 @@ import Kingfisher
 struct JETView: View {
     
     @StateObject private var viewController = JETViewModel()
+    @StateObject private var locationManager = LocationManager()
+    @State private var showLocationAlert = false
+    
     
     var body: some View {
         VStack {
-            TextField("Enter postcode", text: $viewController.postcode)
+            HStack {
+                TextField("Enter postcode", text: $viewController.postcode)
+                
+                Button(action: {
+                                        showLocationAlert = true
+                                    }) {
+                                        Image(systemName: "location")
+                                            .font(.title)
+                                            .padding(.trailing)
+                                    }
+                                    .alert(isPresented: $showLocationAlert) {
+                                        Alert(
+                                            title: Text("Share Your Location"),
+                                            message: Text("Would you like to share your location to find nearby restaurants?"),
+                                            primaryButton: .default(Text("Yes")) {
+                                                if let postcode = locationManager.postcode {
+                                                    viewController.updatePostcode(postcode)
+                                                }
+                                            },
+                                            secondaryButton: .cancel()
+                                        )
+                                    }
+            }
+          
             Button(action: {
                 viewController.fetchRestaurantInfo()
             }) {
@@ -47,7 +73,10 @@ struct JETView: View {
         }
         
         .onAppear {
-            viewController.fetchRestaurantInfo()
+            if let postcode = locationManager.postcode {
+                          viewController.updatePostcode(postcode)
+                      }
+            //viewController.fetchRestaurantInfo()
         }
     }
 }
