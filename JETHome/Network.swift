@@ -8,7 +8,7 @@ import Foundation
 
 class justEatAPIInteraction {
     
-    func getRestaurantInfo(postcode: String, completion: @escaping ([Restaurant]) -> Void) {
+    func getRestaurantInfo(completion: @escaping ([Restaurant]) -> Void) {
         /* Configure session, choose between:
            * defaultSessionConfiguration
            * ephemeralSessionConfiguration
@@ -25,8 +25,7 @@ class justEatAPIInteraction {
            Request (9) (GET https://uk.api.just-eat.io/discovery/uk/restaurants/enriched/bypostcode/EC4M7RF)
          */
 
-       // guard let URL = URL(string: "https://uk.api.just-eat.io/discovery/uk/restaurants/enriched/bypostcode/EC4M7RF") else {return}
-        guard let URL = URL(string: "https://uk.api.just-eat.io/discovery/uk/restaurants/enriched/bypostcode/\(postcode)") else {return}
+        guard let URL = URL(string: "https://uk.api.just-eat.io/discovery/uk/restaurants/enriched/bypostcode/EC4M7RF") else {return}
         var request = URLRequest(url: URL)
         request.httpMethod = "GET"
 
