@@ -17,6 +17,7 @@ struct JETView: View {
     @State private var showLocationAlert = false
     @State private var selectedOption: OptionType = .delivery
     @State private var selectedCuisine: CuisineType? = nil //.all
+    @State private var selectedFlavour: FlavourType? = nil
     
     enum OptionType {
         case delivery, collection
@@ -32,6 +33,17 @@ struct JETView: View {
         case electronics = "electronics"
     }
     
+    enum FlavourType : String, CaseIterable {
+        case chicken = "chicken"
+        case burgers = "burgers"
+        case american = "american"
+        case periperi = "peri-peri"
+        case sandwiches = "sandwiches"
+        case kebabs = "kebabs"
+        case breakfast = "breakfast"
+        case chinese = "chinese"
+    }
+    
     var filteredRestaurants : [Restaurant] {
         viewController.restaurants.filter {
             restaurant in
@@ -39,8 +51,9 @@ struct JETView: View {
             
             //let matchCuisine = selectedCuisine == nil || restaurant.cuisines.contains { $0.uniqueName == selectedCuisine?.rawValue }
             let matchCuisine = selectedCuisine == nil || (selectedCuisine == .restaurant ? !restaurant.cuisines.contains { $0.uniqueName == "groceries" || $0.uniqueName == "health-and-beauty" || $0.uniqueName == "convenience" || $0.uniqueName == "alcohol" || $0.uniqueName == "electronics" } : restaurant.cuisines.contains { $0.uniqueName == selectedCuisine?.rawValue })
+            let matchFlavour = selectedFlavour == nil || restaurant.cuisines.contains { $0.uniqueName == selectedFlavour?.rawValue.lowercased() }
             
-            return matchOption && matchCuisine
+            return matchOption && matchCuisine && matchFlavour
         }
         
         
@@ -56,109 +69,128 @@ struct JETView: View {
     
     var body: some View {
         VStack {
-            HStack {
-                TextField("Enter postcode", text: $viewController.postcode)
-                
-                Spacer()
-                Button(action: {
-                    showLocationAlert = true
-                }) {
-                    Image(systemName: "location")
-                        .font(.system(size: 20))
-                        .padding(.trailing)
+            ScrollView {
+                HStack {
+                    TextField("Enter postcode", text: $viewController.postcode)
+                    
+                    Spacer()
+                    Button(action: {
+                        showLocationAlert = true
+                    }) {
+                        Image(systemName: "location")
+                            .font(.system(size: 20))
+                            .padding(.trailing)
+                    }
+                    .alert(isPresented: $showLocationAlert) {
+                        Alert(
+                            title: Text("Share Your Location"),
+                            message: Text("Would you like to share your location to find nearby restaurants?"),
+                            primaryButton: .default(Text("Yes")) {
+                                if let postcode = locationManager.postcode {
+                                    viewController.updatePostcode(postcode)
+                                }
+                            },
+                            secondaryButton: .cancel()
+                        )
+                    }
                 }
-                .alert(isPresented: $showLocationAlert) {
-                    Alert(
-                        title: Text("Share Your Location"),
-                        message: Text("Would you like to share your location to find nearby restaurants?"),
-                        primaryButton: .default(Text("Yes")) {
-                            if let postcode = locationManager.postcode {
-                                viewController.updatePostcode(postcode)
+                .padding(.leading, 20)
+                // .padding(.trailing, 20)
+                
+                Button(action: {
+                    viewController.fetchRestaurantInfo()
+                }) {
+                    Text("Get Restaurants")
+                }
+                
+                HStack {
+                    Button(action: {
+                        selectedOption = .delivery
+                    }) {
+                        Text("Delivery")
+                    }
+                    
+                    Button(action: {
+                        selectedOption = .collection
+                    }) {
+                        Text("Collection")
+                    }
+                    
+                }
+                
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 15) {
+                        ForEach(CuisineType.allCases, id: \.self) { cuisine in
+                            Button(action: {
+                                selectedCuisine = cuisine
+                            }) {
+                                //  CategoryItems(image: cuisine.rawValue, title: cuisine.rawValue.capitalized, isSelected: selectedCuisine == cuisine)
+                                CategoryItems(image: cuisine.rawValue, title: cuisine.rawValue.replacingOccurrences(of: "-", with: " ").capitalized, isSelected: selectedCuisine == cuisine)
                             }
-                        },
-                        secondaryButton: .cancel()
-                    )
-                }
-            }
-            .padding(.leading, 20)
-            // .padding(.trailing, 20)
-            
-            Button(action: {
-                viewController.fetchRestaurantInfo()
-            }) {
-                Text("Get Restaurants")
-            }
-            
-            HStack {
-                Button(action: {
-                    selectedOption = .delivery
-                }) {
-                    Text("Delivery")
-                }
-                
-                Button(action: {
-                    selectedOption = .collection
-                }) {
-                    Text("Collection")
-                }
-                
-            }
-            
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 15) {
-                    ForEach(CuisineType.allCases, id: \.self) { cuisine in
-                        Button(action: {
-                            selectedCuisine = cuisine
-                        }) {
-                            //  CategoryItems(image: cuisine.rawValue, title: cuisine.rawValue.capitalized, isSelected: selectedCuisine == cuisine)
-                            CategoryItems(image: cuisine.rawValue, title: cuisine.rawValue.replacingOccurrences(of: "-", with: " ").capitalized, isSelected: selectedCuisine == cuisine)
                         }
                     }
                 }
-                .padding(.horizontal, 20)
+                .padding(.horizontal, 12)
                 
-            }
-            /** ScrollView(.horizontal, showsIndicators: false) {
-             HStack(spacing: 15) {
-             CategoryItems(image: "european", title: "Restaurants", isSelected: false)
-             CategoryItems(image: "groceries", title: "Groceries", isSelected: false)
-             CategoryItems(image: "health-and-beauty", title: "Health & Beauty", isSelected: false)
-             CategoryItems(image: "convenience", title: "Convenience", isSelected: false)
-             CategoryItems(image: "alcohol", title: "Alcohol", isSelected: false)
-             CategoryItems(image: "electronics", title: "electronics", isSelected: false)
-             }
-             
-             */
-            
-            ScrollView(.vertical) {
-                // Image(systemName: "globe")
+                if selectedCuisine == .restaurant {
+                    Text("Find your flavour")
+                        .fontWeight(.bold)
+                    
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 15) {
+                            ForEach(FlavourType.allCases, id: \.self) { flavour in
+                                Button(action: {
+                                    selectedFlavour = selectedFlavour == flavour ? nil : flavour
+                                }) {
+                                    //  CategoryItems(image: cuisine.rawValue, title: cuisine.rawValue.capitalized, isSelected: selectedCuisine == cuisine)
+                                    CategoryItems(image: flavour.rawValue, title: flavour.rawValue.replacingOccurrences(of: "-", with: " ").capitalized, isSelected: selectedFlavour == flavour)
+                                }
+                            }
+                        }
+                    } .padding(.horizontal, 12)
+                    
+                }
+                /** ScrollView(.horizontal, showsIndicators: false) {
+                 HStack(spacing: 15) {
+                 CategoryItems(image: "european", title: "Restaurants", isSelected: false)
+                 CategoryItems(image: "groceries", title: "Groceries", isSelected: false)
+                 CategoryItems(image: "health-and-beauty", title: "Health & Beauty", isSelected: false)
+                 CategoryItems(image: "convenience", title: "Convenience", isSelected: false)
+                 CategoryItems(image: "alcohol", title: "Alcohol", isSelected: false)
+                 CategoryItems(image: "electronics", title: "electronics", isSelected: false)
+                 }
+                 
+                 */
                 
-                // VStack(alignment: .leading) {
-                LazyVStack(alignment: .leading, spacing: 16) {
-                    // ForEach(viewController.restaurants.prefix(10), id: \.id){
-                    ForEach (filteredRestaurants.prefix(10), id: \.id) {
-                        restaurant in
-                        RestaurantListView(restaurant: restaurant)
-                            .frame(maxWidth: .infinity)
-                        
+                ScrollView(.vertical) {
+                    // Image(systemName: "globe")
+                    
+                    // VStack(alignment: .leading) {
+                    LazyVStack(alignment: .leading, spacing: 16) {
+                        // ForEach(viewController.restaurants.prefix(10), id: \.id){
+                        ForEach (filteredRestaurants.prefix(10), id: \.id) {
+                            restaurant in
+                            RestaurantListView(restaurant: restaurant)
+                                .frame(maxWidth: .infinity)
+                            
+                        }
                     }
                 }
-            }
-            
-            //.background(Color(.systemGroupedBackground).ignoresSafeArea())
-            .onAppear {
-                if let postcode = locationManager.postcode {
-                    viewController.updatePostcode(postcode)
+                
+                //.background(Color(.systemGroupedBackground).ignoresSafeArea())
+                .onAppear {
+                    if let postcode = locationManager.postcode {
+                        viewController.updatePostcode(postcode)
+                    }
+                    //viewController.fetchRestaurantInfo()
                 }
-                //viewController.fetchRestaurantInfo()
+                // .padding(.leading, 20)
+                //  .padding(.trailing, 20)
+                .padding(.leading, 20)
+                .padding(.trailing, 20)
             }
-            // .padding(.leading, 20)
-            //  .padding(.trailing, 20)
-            .padding(.leading, 20)
-            .padding(.trailing, 20)
         }
     }
-    
 }
 
 
