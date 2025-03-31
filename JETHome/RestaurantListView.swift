@@ -35,10 +35,12 @@ struct RestaurantListView:View {
                             .font(.system(size: 12))
                         Text(formatRating(restaurant.rating.starRating))
                             .font(.system(size: 16, weight: .medium))
-                       // Text("(\(restaurant.rating.count))")
-                        Text("(\(restaurant.rating.count > 200 ? "200+" : "\(restaurant.rating.count)"))")
-                            .font(.system(size: 14, weight: .medium))
-                            .foregroundColor(.gray)
+                        // Text("(\(restaurant.rating.count))")
+                        if restaurant.rating.count > 0 {
+                            Text("(\(restaurant.rating.count > 200 ? "200+" : "\(restaurant.rating.count)"))")
+                                .font(.system(size: 14, weight: .medium))
+                                .foregroundColor(.gray)
+                        }
                     }
                     
                 }
@@ -51,18 +53,18 @@ struct RestaurantListView:View {
                 Text("\(restaurant.address.firstLine), \(restaurant.address.postalCode)")
                     .font(.system(size: 14))
                     .padding(.bottom, 10)
-               // Text(" \(restaurant.isCollection == true ? "Collection" : "")")
-               // Text(" \(restaurant.isDelivery == true ? "Delivery" : "")")
+                // Text(" \(restaurant.isCollection == true ? "Collection" : "")")
+                // Text(" \(restaurant.isDelivery == true ? "Delivery" : "")")
                 
-                if restaurant.isDelivery || restaurant.isCollection {
-                    if restaurant.isDelivery { Text("Delivery")}
-                        if restaurant.isCollection {
-                            Text("Collection")}
-                    }
-               // Text(restaurant.isDelivery)
+                /**  if restaurant.isDelivery || restaurant.isCollection {
+                 if restaurant.isDelivery { Text("Delivery")}
+                 if restaurant.isCollection {
+                 Text("Collection")}
+                 } */
+                // Text(restaurant.isDelivery)
                 
-              //  Text("[\(restaurant.address.location.coordinates.first.map{"\($0)"} ?? "0.0"), \(restaurant.address.location.coordinates.last.map{"\($0)"} ?? "0.0")]")
-               
+                //  Text("[\(restaurant.address.location.coordinates.first.map{"\($0)"} ?? "0.0"), \(restaurant.address.location.coordinates.last.map{"\($0)"} ?? "0.0")]")
+                
             }
         }
         .padding(.leading, 15)
