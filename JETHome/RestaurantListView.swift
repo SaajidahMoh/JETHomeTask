@@ -23,7 +23,6 @@ struct RestaurantListView:View {
             VStack(alignment: .leading, spacing: 4) {
                 HStack {
                     
-                    
                     Text(restaurant.name)
                         .font(.headline)
                         .padding(.top, 10)
@@ -52,6 +51,15 @@ struct RestaurantListView:View {
                 Text("\(restaurant.address.firstLine), \(restaurant.address.postalCode)")
                     .font(.system(size: 14))
                     .padding(.bottom, 10)
+               // Text(" \(restaurant.isCollection == true ? "Collection" : "")")
+               // Text(" \(restaurant.isDelivery == true ? "Delivery" : "")")
+                
+                if restaurant.isDelivery || restaurant.isCollection {
+                    if restaurant.isDelivery { Text("Delivery")}
+                        if restaurant.isCollection {
+                            Text("Collection")}
+                    }
+               // Text(restaurant.isDelivery)
                 
               //  Text("[\(restaurant.address.location.coordinates.first.map{"\($0)"} ?? "0.0"), \(restaurant.address.location.coordinates.last.map{"\($0)"} ?? "0.0")]")
                
@@ -62,6 +70,14 @@ struct RestaurantListView:View {
         .background(Color(.systemBackground))
         .cornerRadius(12)
         .shadow(color: Color.black.opacity(0.08), radius: 5, x: 0, y: 0)
+    }
+    func formatRating( _ rating: Float) -> String {
+        if rating == 0 {
+            return "0"
+        } else {
+            let ratingValue = String(format: "%.2f", rating)
+            return ratingValue.trimmingCharacters(in: CharacterSet(charactersIn: "0").union(.punctuationCharacters))
+        }
     }
     
 }

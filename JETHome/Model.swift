@@ -15,6 +15,8 @@ struct Restaurant: Decodable {
     let rating: Rating
     let cuisines: [Cuisine]
     let logoUrl: String
+    let isCollection: Bool
+    let isDelivery: Bool
         //    let driveDistance: Float
 }
 struct Address: Decodable {
