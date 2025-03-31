@@ -22,11 +22,12 @@ struct JETView: View {
             HStack {
                 TextField("Enter postcode", text: $viewController.postcode)
                 
+                Spacer()
                 Button(action: {
                                         showLocationAlert = true
                                     }) {
                                         Image(systemName: "location")
-                                            .font(.title)
+                                            .font(.system(size: 20))
                                             .padding(.trailing)
                                     }
                                     .alert(isPresented: $showLocationAlert) {
@@ -42,6 +43,8 @@ struct JETView: View {
                                         )
                                     }
             }
+            .padding(.leading, 20)
+           // .padding(.trailing, 20)
           
             Button(action: {
                 viewController.fetchRestaurantInfo()
@@ -52,35 +55,27 @@ struct JETView: View {
             ScrollView {
                // Image(systemName: "globe")
                 
-                VStack(alignment: .leading) {
-                    
+               // VStack(alignment: .leading) {
+                LazyVStack(spacing: 16) {
                     ForEach(viewController.restaurants.prefix(10), id: \.id){
                         restaurant in
-                        VStack(alignment: .leading) {
-                            KFImage(URL(string: "\(restaurant.logoUrl)")!)
-                            Text(restaurant.name)
-                                .font(.title)
-                            
-                            Text(restaurant.cuisines.map { $0.name }.joined(separator: ", "))
-                            Text("\(formatRating(restaurant.rating.starRating)) (\(restaurant.rating.count))")
-                          //  Text("\(formatRating(restaurant.driveDistance))")
-                            Text(restaurant.address.location.coordinates.first.map{"\($0)"} ?? "0.0")
-                            Text(restaurant.address.location.coordinates.last.map{"\($0)"} ?? "0.0")
-                       //     Text(restaurant.address.location)
-                        }
+                        RestaurantListView(restaurant: restaurant)
                         
                     }
                 }
-                .padding()
             }
         }
-        
+        //.background(Color(.systemGroupedBackground).ignoresSafeArea())
         .onAppear {
             if let postcode = locationManager.postcode {
                           viewController.updatePostcode(postcode)
                       }
             //viewController.fetchRestaurantInfo()
         }
+       // .padding(.leading, 20)
+      //  .padding(.trailing, 20)
+        .padding(.leading, 20)
+        .padding(.trailing, 20)
     }
 }
 
