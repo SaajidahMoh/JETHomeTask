@@ -130,7 +130,7 @@ struct JETView: View {
                         }
                     }
                 }
-                .padding(.horizontal, 12)
+                .padding(.horizontal, 10)
                 
                 if selectedCuisine == .restaurant {
                     Text("Find your flavour")
@@ -147,8 +147,24 @@ struct JETView: View {
                                 }
                             }
                         }
-                    } .padding(.horizontal, 12)
+                    } .padding(.horizontal, 10)
                     
+                }
+                
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 15) {
+                        OptionItems(text: "Deals")
+                        OptionItems(text: "StampCards")
+                        OptionItems(text: "Free Delivery")
+                        OptionItems(text: "4+ stars")
+                                    OptionItems(text: "Open now")
+                                    OptionItems(text: "New")
+                                    OptionItems(text: "Hygiene Rating 3+ / Pass")
+                                    OptionItems(text: "Halal")
+                                    
+                    }
+                            .padding(.horizontal)
+                            .padding(.top, 15)
                 }
                 /** ScrollView(.horizontal, showsIndicators: false) {
                  HStack(spacing: 15) {
@@ -193,7 +209,27 @@ struct JETView: View {
     }
 }
 
-
+                                    struct OptionItems: View {
+                                       // let icon: String
+                                        let text: String
+                                        
+                                        var body: some View {
+                                            HStack(spacing: 4) {
+                                            //    Image(systemName: icon)
+                                                //            .font(.system(size: 12))
+                                                
+                                                Text(text)
+                                                    .font(.system(size: 13))
+                                                    .fontWeight(.bold)
+                                            }
+                                            .padding(.vertical, 5)
+                                            .padding(.horizontal, 5)
+                                            .overlay (RoundedRectangle(cornerRadius: 20)
+                                                .stroke(Color.gray, lineWidth: 1)
+                                                      )
+                                            .padding(.bottom, 10)
+                                        }
+                                    }
 struct CategoryItems: View {
     let image: String
     let title: String
@@ -205,14 +241,14 @@ struct CategoryItems: View {
                 if isSelected {
                     RoundedRectangle(cornerRadius: 15)
                         .fill(Color.orange.opacity(0.3))
-                        .frame(width:70, height: 70)
+                        .frame(width:55, height: 50)
                     //  .opacity(isSelected ? 1 : 0)
                 }
                 
                 Image(image)
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 80, height: 80)
+                    .frame(width: 72, height: 72)
                     .cornerRadius(10)
                 
             }
