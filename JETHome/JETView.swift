@@ -17,7 +17,8 @@ struct JETView: View {
     @State private var showLocationAlert = false
     @State private var selectedOption: OptionType = .delivery
     @State private var selectedCuisine: CuisineType? = nil //.all
-    @State private var selectedFlavour: FlavourType? = nil
+    //@State private var selectedFlavour: FlavourType? = nil
+    @State private var selectedFlavour: Set<FlavourType> = []
     
     enum OptionType {
         case delivery, collection
@@ -51,7 +52,12 @@ struct JETView: View {
             
             //let matchCuisine = selectedCuisine == nil || restaurant.cuisines.contains { $0.uniqueName == selectedCuisine?.rawValue }
             let matchCuisine = selectedCuisine == nil || (selectedCuisine == .restaurant ? !restaurant.cuisines.contains { $0.uniqueName == "groceries" || $0.uniqueName == "health-and-beauty" || $0.uniqueName == "convenience" || $0.uniqueName == "alcohol" || $0.uniqueName == "electronics" } : restaurant.cuisines.contains { $0.uniqueName == selectedCuisine?.rawValue })
-            let matchFlavour = selectedFlavour == nil || restaurant.cuisines.contains { $0.uniqueName == selectedFlavour?.rawValue.lowercased() }
+         //   let matchFlavour = selectedFlavour == nil || restaurant.cuisines.contains { $0.uniqueName == selectedFlavour?.rawValue.lowercased() }
+            let matchFlavour = selectedCuisine == .restaurant ? (selectedFlavour.isEmpty || selectedFlavour.contains { flavour in
+                restaurant.cuisines.contains {
+                    $0.uniqueName == flavour.rawValue.lowercased()
+                }
+            }): true
             
             return matchOption && matchCuisine && matchFlavour
         }
@@ -123,6 +129,9 @@ struct JETView: View {
                         ForEach(CuisineType.allCases, id: \.self) { cuisine in
                             Button(action: {
                                 selectedCuisine = cuisine
+                                if selectedCuisine != .restaurant {
+                                    selectedFlavour.removeAll()
+                                }
                             }) {
                                 //  CategoryItems(image: cuisine.rawValue, title: cuisine.rawValue.capitalized, isSelected: selectedCuisine == cuisine)
                                 CategoryItems(image: cuisine.rawValue, title: cuisine.rawValue.replacingOccurrences(of: "-", with: " ").capitalized, isSelected: selectedCuisine == cuisine)
@@ -140,10 +149,16 @@ struct JETView: View {
                         HStack(spacing: 15) {
                             ForEach(FlavourType.allCases, id: \.self) { flavour in
                                 Button(action: {
-                                    selectedFlavour = selectedFlavour == flavour ? nil : flavour
+                                    //selectedFlavour = selectedFlavour == flavour ? nil : flavour
+                                    if selectedFlavour.contains(flavour) {
+                                        selectedFlavour.remove(flavour)
+                                    } else {
+                                        selectedFlavour.insert(flavour)
+                                    }
                                 }) {
                                     //  CategoryItems(image: cuisine.rawValue, title: cuisine.rawValue.capitalized, isSelected: selectedCuisine == cuisine)
-                                    CategoryItems(image: flavour.rawValue, title: flavour.rawValue.replacingOccurrences(of: "-", with: " ").capitalized, isSelected: selectedFlavour == flavour)
+                                    CategoryItems(image: flavour.rawValue, title: flavour.rawValue.replacingOccurrences(of: "-", with: " ").capitalized, isSelected: selectedFlavour.contains(flavour))
+                                                  //isSelected: selectedFlavour == flavour)
                                 }
                             }
                         }
