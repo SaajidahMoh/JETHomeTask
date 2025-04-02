@@ -20,7 +20,9 @@ struct JETView: View {
     //@State private var selectedFlavour: FlavourType? = nil
     @State private var selectedFlavour: Set<FlavourType> = []
     @State private var isPostcodeEntered: Bool = false
+    @State private var showPostcodeSheet: Bool = false
     @State private var searchText: String = ""
+    @State private var showNoRestaurant = false
     
     enum OptionType {
         case delivery, collection
@@ -50,7 +52,7 @@ struct JETView: View {
     var filteredRestaurants : [Restaurant] {
         viewController.restaurants.filter {
             restaurant in
-                // let matchOption = selectedOption == .delivery ? restaurant.isDelivery : restaurant.isCollection
+            // let matchOption = selectedOption == .delivery ? restaurant.isDelivery : restaurant.isCollection
             let matchOption: Bool
             if selectedOption == .delivery {
                 matchOption = restaurant.isDelivery && restaurant.isOpenNowForDelivery
@@ -85,6 +87,34 @@ struct JETView: View {
     var body: some View {
         VStack {
             ScrollView {
+                /** -- performance issue  HStack {
+                 Button(action: {
+                 showPostcodeSheet = true
+                 }) {
+                 HStack {
+                 Text(isPostcodeEntered ? viewController.postcode : "Enter Postcode")
+                 .foregroundColor(.primary)
+                 Image(systemName: "chevron.down")
+                 .foregroundColor(.primary)
+                 
+                 }
+                 .padding(.top, 10)
+                 .padding(.bottom, 10)
+                 }
+                 .sheet(isPresented: $showPostcodeSheet) {
+                 PostcodeView(postcode: $viewController.postcode)
+                 .onDisappear {
+                 isPostcodeEntered = !viewController.postcode.isEmpty
+                 if isPostcodeEntered {
+                 viewController.updatePostcode( viewController.postcode)
+                 }
+                 }
+                 }
+                 
+                 Spacer()
+                 }
+                 .padding(.leading, 20) */
+                
                 HStack {
                     TextField("Enter postcode", text: $viewController.postcode)
                         .onChange(of: viewController.postcode) { newValue in
@@ -134,15 +164,19 @@ struct JETView: View {
                     
                     Button(action: {
                         viewController.fetchRestaurantInfo()
+                        showNoRestaurant = false
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            showNoRestaurant = true
+                        }
                     }) {
                         Text("Get Restaurants")
                     }
                     
-                    if !viewController.restaurantsFound {
+                    if !viewController.restaurantsFound && showNoRestaurant {
                         noRestaurantView()
                     } else {
                         
-                            TextField("Search restaurants", text: $searchText)
+                        TextField("Search restaurants", text: $searchText)
                             .padding(.leading, 30)
                             .background(
                                 HStack {
@@ -152,11 +186,11 @@ struct JETView: View {
                                         .padding(.leading, 5)
                                     Spacer()
                                 }
-                                )
+                            )
                             .padding()
-                                    .background(Color(.systemGray6))
-                                    .cornerRadius(10)
-                                    .padding(.horizontal, 20)
+                            .background(Color(.systemGray6))
+                            .cornerRadius(10)
+                            .padding(.horizontal, 20)
                         
                         
                         ScrollView(.horizontal, showsIndicators: false) {
@@ -257,8 +291,8 @@ struct JETView: View {
                         .padding(.leading, 20)
                         .padding(.trailing, 20)
                     }
-                     } else {
-                        noPostcodeView()
+                } else {
+                    noPostcodeView()
                 }
             }
         }
@@ -357,7 +391,7 @@ struct CategoryItems: View {
             
             Text(title)
                 .font(.caption)
-               // .foregroundColor(Color.black)
+            // .foregroundColor(Color.black)
             //.foregroundColor(Color(#242E30))
                 .fontWeight(isSelected ? .bold : .regular)
         }
