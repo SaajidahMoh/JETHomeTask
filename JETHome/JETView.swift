@@ -19,6 +19,7 @@ struct JETView: View {
     @State private var selectedCuisine: CuisineType? = nil //.all
     //@State private var selectedFlavour: FlavourType? = nil
     @State private var selectedFlavour: Set<FlavourType> = []
+    @State private var isPostcodeEntered: Bool = false
     
     enum OptionType {
         case delivery, collection
@@ -78,6 +79,9 @@ struct JETView: View {
             ScrollView {
                 HStack {
                     TextField("Enter postcode", text: $viewController.postcode)
+                        .onChange(of: viewController.postcode) { newValue in
+                            isPostcodeEntered = !newValue.isEmpty
+                        }
                     
                     Spacer()
                     Button(action: {
@@ -124,101 +128,122 @@ struct JETView: View {
                     
                 }
                 
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 15) {
-                        ForEach(CuisineType.allCases, id: \.self) { cuisine in
-                            Button(action: {
-                                selectedCuisine = cuisine
-                                if selectedCuisine != .restaurant {
-                                    selectedFlavour.removeAll()
-                                }
-                            }) {
-                                //  CategoryItems(image: cuisine.rawValue, title: cuisine.rawValue.capitalized, isSelected: selectedCuisine == cuisine)
-                                CategoryItems(image: cuisine.rawValue, title: cuisine.rawValue.replacingOccurrences(of: "-", with: " ").capitalized, isSelected: selectedCuisine == cuisine)
-                            }
-                        }
-                    }
-                }
-                .padding(.horizontal, 10)
-                
-                if selectedCuisine == .restaurant {
-                    Text("Find your flavour")
-                        .fontWeight(.bold)
-                    
+                if isPostcodeEntered {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 15) {
-                            ForEach(FlavourType.allCases, id: \.self) { flavour in
+                            ForEach(CuisineType.allCases, id: \.self) { cuisine in
                                 Button(action: {
-                                    //selectedFlavour = selectedFlavour == flavour ? nil : flavour
-                                    if selectedFlavour.contains(flavour) {
-                                        selectedFlavour.remove(flavour)
-                                    } else {
-                                        selectedFlavour.insert(flavour)
+                                    selectedCuisine = cuisine
+                                    if selectedCuisine != .restaurant {
+                                        selectedFlavour.removeAll()
                                     }
                                 }) {
                                     //  CategoryItems(image: cuisine.rawValue, title: cuisine.rawValue.capitalized, isSelected: selectedCuisine == cuisine)
-                                    CategoryItems(image: flavour.rawValue, title: flavour.rawValue.replacingOccurrences(of: "-", with: " ").capitalized, isSelected: selectedFlavour.contains(flavour))
-                                                  //isSelected: selectedFlavour == flavour)
+                                    CategoryItems(image: cuisine.rawValue, title: cuisine.rawValue.replacingOccurrences(of: "-", with: " ").capitalized, isSelected: selectedCuisine == cuisine)
                                 }
                             }
                         }
-                    } .padding(.horizontal, 10)
-                    
-                }
-                
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 15) {
-                        OptionItems(text: "Deals")
-                        OptionItems(text: "StampCards")
-                        OptionItems(text: "Free Delivery")
-                        OptionItems(text: "4+ stars")
-                                    OptionItems(text: "Open now")
-                                    OptionItems(text: "New")
-                                    OptionItems(text: "Hygiene Rating 3+ / Pass")
-                                    OptionItems(text: "Halal")
-                                    
                     }
-                            .padding(.horizontal)
-                            .padding(.top, 15)
-                }
-                /** ScrollView(.horizontal, showsIndicators: false) {
-                 HStack(spacing: 15) {
-                 CategoryItems(image: "european", title: "Restaurants", isSelected: false)
-                 CategoryItems(image: "groceries", title: "Groceries", isSelected: false)
-                 CategoryItems(image: "health-and-beauty", title: "Health & Beauty", isSelected: false)
-                 CategoryItems(image: "convenience", title: "Convenience", isSelected: false)
-                 CategoryItems(image: "alcohol", title: "Alcohol", isSelected: false)
-                 CategoryItems(image: "electronics", title: "electronics", isSelected: false)
-                 }
-                 
-                 */
-                
-                ScrollView(.vertical) {
-                    // Image(systemName: "globe")
+                    .padding(.horizontal, 10)
                     
-                    // VStack(alignment: .leading) {
-                    LazyVStack(alignment: .leading, spacing: 16) {
-                        // ForEach(viewController.restaurants.prefix(10), id: \.id){
-                        ForEach (filteredRestaurants.prefix(10), id: \.id) {
-                            restaurant in
-                            RestaurantListView(restaurant: restaurant)
-                                .frame(maxWidth: .infinity)
+                    if selectedCuisine == .restaurant {
+                        Text("Find your flavour")
+                            .fontWeight(.bold)
+                        
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 15) {
+                                ForEach(FlavourType.allCases, id: \.self) { flavour in
+                                    Button(action: {
+                                        //selectedFlavour = selectedFlavour == flavour ? nil : flavour
+                                        if selectedFlavour.contains(flavour) {
+                                            selectedFlavour.remove(flavour)
+                                        } else {
+                                            selectedFlavour.insert(flavour)
+                                        }
+                                    }) {
+                                        //  CategoryItems(image: cuisine.rawValue, title: cuisine.rawValue.capitalized, isSelected: selectedCuisine == cuisine)
+                                        CategoryItems(image: flavour.rawValue, title: flavour.rawValue.replacingOccurrences(of: "-", with: " ").capitalized, isSelected: selectedFlavour.contains(flavour))
+                                        //isSelected: selectedFlavour == flavour)
+                                    }
+                                }
+                            }
+                        } .padding(.horizontal, 10)
+                        
+                    }
+                    
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 15) {
+                            OptionItems(text: "Deals")
+                            OptionItems(text: "StampCards")
+                            OptionItems(text: "Free Delivery")
+                            OptionItems(text: "4+ stars")
+                            OptionItems(text: "Open now")
+                            OptionItems(text: "New")
+                            OptionItems(text: "Hygiene Rating 3+ / Pass")
+                            OptionItems(text: "Halal")
                             
                         }
+                        .padding(.horizontal)
+                        .padding(.top, 15)
+                    }
+                    /** ScrollView(.horizontal, showsIndicators: false) {
+                     HStack(spacing: 15) {
+                     CategoryItems(image: "european", title: "Restaurants", isSelected: false)
+                     CategoryItems(image: "groceries", title: "Groceries", isSelected: false)
+                     CategoryItems(image: "health-and-beauty", title: "Health & Beauty", isSelected: false)
+                     CategoryItems(image: "convenience", title: "Convenience", isSelected: false)
+                     CategoryItems(image: "alcohol", title: "Alcohol", isSelected: false)
+                     CategoryItems(image: "electronics", title: "electronics", isSelected: false)
+                     }
+                     
+                     */
+                    
+                    ScrollView(.vertical) {
+                        // Image(systemName: "globe")
+                        
+                        // VStack(alignment: .leading) {
+                        LazyVStack(alignment: .leading, spacing: 16) {
+                            // ForEach(viewController.restaurants.prefix(10), id: \.id){
+                            ForEach (filteredRestaurants.prefix(10), id: \.id) {
+                                restaurant in
+                                RestaurantListView(restaurant: restaurant)
+                                    .frame(maxWidth: .infinity)
+                                
+                            }
+                        }
+                    }
+                    
+                    //.background(Color(.systemGroupedBackground).ignoresSafeArea())
+                    .onAppear {
+                        if let postcode = locationManager.postcode {
+                            viewController.updatePostcode(postcode)
+                        }
+                        //viewController.fetchRestaurantInfo()
+                    }
+                    // .padding(.leading, 20)
+                    //  .padding(.trailing, 20)
+                    .padding(.leading, 20)
+                    .padding(.trailing, 20)
+                } else {
+                    VStack {
+                        Image("NoAddress")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width:300, height:350)
+                            .padding(.top, 50)
+                        
+                        Text("Enter your postcode")
+                            .font(.system(size: 28, weight: .bold))
+                            .multilineTextAlignment(.center)
+                        
+                        Text("Enter your postcode to discover restaurants or groceries near you")
+                            .font(.system(size: 16))
+                            .foregroundColor(.secondary)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 32)
+                           // .padding(.top, 0.5)
                     }
                 }
-                
-                //.background(Color(.systemGroupedBackground).ignoresSafeArea())
-                .onAppear {
-                    if let postcode = locationManager.postcode {
-                        viewController.updatePostcode(postcode)
-                    }
-                    //viewController.fetchRestaurantInfo()
-                }
-                // .padding(.leading, 20)
-                //  .padding(.trailing, 20)
-                .padding(.leading, 20)
-                .padding(.trailing, 20)
             }
         }
     }

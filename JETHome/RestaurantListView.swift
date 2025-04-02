@@ -64,7 +64,8 @@ struct RestaurantListView:View {
                 // Text(restaurant.isDelivery)
                 
                 //  Text("[\(restaurant.address.location.coordinates.first.map{"\($0)"} ?? "0.0"), \(restaurant.address.location.coordinates.last.map{"\($0)"} ?? "0.0")]")
-                
+   //             Text (restaurant.deals.description)
+             //   Text (restaurant.deals.offerType)
             }
         }
         .padding(.leading, 15)
