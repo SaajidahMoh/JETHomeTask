@@ -11,6 +11,7 @@ class JETViewModel : ObservableObject {
     @Published var postcode: String = ""
         //"EC4M7RF"
     @Published var isLoading: Bool = false
+    @Published var restaurantsFound: Bool = false
     
     func fetchRestaurantInfo(){
         guard !postcode.isEmpty else {
@@ -23,7 +24,8 @@ class JETViewModel : ObservableObject {
         APIInteraction.getRestaurantInfo(postcode:postcode){ restaurants in
             DispatchQueue.main.async {
                 self.restaurants = restaurants
-                self.isLoading = false
+              //  self.isLoading = false
+                self.restaurantsFound = !self.restaurants.isEmpty
             }
         }
     }
