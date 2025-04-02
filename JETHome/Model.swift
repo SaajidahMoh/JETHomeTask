@@ -16,7 +16,9 @@ struct Restaurant: Decodable {
     let cuisines: [Cuisine]
     let logoUrl: String
     let isCollection: Bool
+    let isOpenNowForCollection: Bool
     let isDelivery: Bool
+    let isOpenNowForDelivery: Bool
     let deals: [Deals]
         //    let driveDistance: Float
 }

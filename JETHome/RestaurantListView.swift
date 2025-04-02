@@ -52,21 +52,48 @@ struct RestaurantListView:View {
                 //     Text(restaurant.address.location)
                 Text("\(restaurant.address.firstLine), \(restaurant.address.postalCode)")
                     .font(.system(size: 14))
-                    .padding(.bottom, 10)
+                    //.padding(.bottom, 10)
                 // Text(" \(restaurant.isCollection == true ? "Collection" : "")")
                 // Text(" \(restaurant.isDelivery == true ? "Delivery" : "")")
                 
-                /**  if restaurant.isDelivery || restaurant.isCollection {
-                 if restaurant.isDelivery { Text("Delivery")}
-                 if restaurant.isCollection {
-                 Text("Collection")}
-                 } */
+               /** if restaurant.isDelivery && restaurant.isOpenNowForDelivery {
+                    HStack(spacing: 0) {
+                        Image(systemName: "bicycle")
+                        Text("Open")
+                    }
+                }
+                
+                if restaurant.isCollection && restaurant.isOpenNowForCollection {
+                    HStack(spacing: 0) {
+                        Image(systemName: "cart")
+                        Text("Open")
+                    }
+                } */
+                
+                if (restaurant.isDelivery && restaurant.isOpenNowForDelivery) || (restaurant.isCollection && restaurant.isOpenNowForCollection)
+                {
+                    Text("Open")
+                        .font(.system(size: 14))
+                        .foregroundColor(.green)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(Color.green.opacity(0.1))
+                        .cornerRadius(4)
+                } else {
+                    Text("Closed")
+                        .font(.system(size: 14))
+                        .foregroundColor(.red)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(Color.red.opacity(0.1))
+                        .cornerRadius(4)
+                }
                 // Text(restaurant.isDelivery)
                 
                 //  Text("[\(restaurant.address.location.coordinates.first.map{"\($0)"} ?? "0.0"), \(restaurant.address.location.coordinates.last.map{"\($0)"} ?? "0.0")]")
-   //             Text (restaurant.deals.description)
-             //   Text (restaurant.deals.offerType)
-            }
+                //             Text (restaurant.deals.description)
+                //   Text (restaurant.deals.offerType)
+            }  .padding(.bottom, 10)
         }
         .padding(.leading, 15)
         .padding(.trailing, 15)

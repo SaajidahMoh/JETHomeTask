@@ -20,6 +20,7 @@ struct JETView: View {
     //@State private var selectedFlavour: FlavourType? = nil
     @State private var selectedFlavour: Set<FlavourType> = []
     @State private var isPostcodeEntered: Bool = false
+    @State private var searchText: String = ""
     
     enum OptionType {
         case delivery, collection
@@ -49,8 +50,13 @@ struct JETView: View {
     var filteredRestaurants : [Restaurant] {
         viewController.restaurants.filter {
             restaurant in
-            let matchOption = selectedOption == .delivery ? restaurant.isDelivery : restaurant.isCollection
-            
+                // let matchOption = selectedOption == .delivery ? restaurant.isDelivery : restaurant.isCollection
+            let matchOption: Bool
+            if selectedOption == .delivery {
+                matchOption = restaurant.isDelivery && restaurant.isOpenNowForDelivery
+            } else {
+                matchOption = restaurant.isCollection && restaurant.isOpenNowForCollection
+            }
             //let matchCuisine = selectedCuisine == nil || restaurant.cuisines.contains { $0.uniqueName == selectedCuisine?.rawValue }
             let matchCuisine = selectedCuisine == nil || (selectedCuisine == .restaurant ? !restaurant.cuisines.contains { $0.uniqueName == "groceries" || $0.uniqueName == "health-and-beauty" || $0.uniqueName == "convenience" || $0.uniqueName == "alcohol" || $0.uniqueName == "electronics" } : restaurant.cuisines.contains { $0.uniqueName == selectedCuisine?.rawValue })
             //   let matchFlavour = selectedFlavour == nil || restaurant.cuisines.contains { $0.uniqueName == selectedFlavour?.rawValue.lowercased() }
@@ -60,7 +66,9 @@ struct JETView: View {
                 }
             }): true
             
-            return matchOption && matchCuisine && matchFlavour
+            let matchSearchText = searchText.isEmpty || restaurant.name.lowercased().contains(searchText.lowercased())
+            
+            return matchOption && matchCuisine && matchFlavour && matchSearchText
         }
         
         
@@ -107,12 +115,6 @@ struct JETView: View {
                 .padding(.leading, 20)
                 // .padding(.trailing, 20)
                 
-                Button(action: {
-                    viewController.fetchRestaurantInfo()
-                }) {
-                    Text("Get Restaurants")
-                }
-                
                 HStack {
                     Button(action: {
                         selectedOption = .delivery
@@ -129,9 +131,34 @@ struct JETView: View {
                 }
                 
                 if isPostcodeEntered {
+                    
+                    Button(action: {
+                        viewController.fetchRestaurantInfo()
+                    }) {
+                        Text("Get Restaurants")
+                    }
+                    
                     if !viewController.restaurantsFound {
                         noRestaurantView()
                     } else {
+                        
+                            TextField("Search restaurants", text: $searchText)
+                            .padding(.leading, 30)
+                            .background(
+                                HStack {
+                                    Image(systemName: "magnifyingglass")
+                                        .frame(width:15, height:15)
+                                        .foregroundColor(Color.orange)
+                                        .padding(.leading, 5)
+                                    Spacer()
+                                }
+                                )
+                            .padding()
+                                    .background(Color(.systemGray6))
+                                    .cornerRadius(10)
+                                    .padding(.horizontal, 20)
+                        
+                        
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 15) {
                                 ForEach(CuisineType.allCases, id: \.self) { cuisine in
@@ -152,6 +179,7 @@ struct JETView: View {
                         if selectedCuisine == .restaurant {
                             Text("Find your flavour")
                                 .fontWeight(.bold)
+                                .padding(.leading)
                             
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 15) {
@@ -329,7 +357,7 @@ struct CategoryItems: View {
             
             Text(title)
                 .font(.caption)
-                .foregroundColor(Color.black)
+               // .foregroundColor(Color.black)
             //.foregroundColor(Color(#242E30))
                 .fontWeight(isSelected ? .bold : .regular)
         }
