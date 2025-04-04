@@ -52,20 +52,17 @@ struct JETView: View {
         case chinese = "chinese"
     }
     
-    enum FilterType: String {
-        case freeDelivery = "free-delivery"
-        case lowDeliveryFee = "low-delivery-fee"
-        case new = "new"
-        case deals = "deals"
-        case halal = "halal"
-        case freebies = "freebies"
-        case stampCardRestaurants = "stampcard-restaurants"
-        case fourStar = "four_star"
-        //case fsa = "fsa"
-        case openNow = "open_now"
-        //case percentOffWednesdays = "percentoffwednesdays"
-        //case withDiscounts = "with_discounts"
-        case eightOff = "8off"
+    enum FilterType: String, CaseIterable {
+        case freeDelivery = "Free Delivery"
+        case lowDeliveryFee = "Low Delivery Fee"
+        case new = "New"
+        case deals = "Deals"
+        case halal = "Halal"
+        case freebies = "Freebies"
+        case stampCardRestaurants = "Stampcards"
+        case fourStar = "4 star +"
+        case openNow = "Open"
+        case eightOff = "£8 off"
     }
     
     var filteredRestaurants : [Restaurant] {
@@ -89,7 +86,32 @@ struct JETView: View {
             
             let matchSearchText = searchText.isEmpty || restaurant.name.lowercased().contains(searchText.lowercased())
             
-            return matchOption && matchCuisine && matchFlavour && matchSearchText //&& matchFilters
+            let matchFilters = selectedFilters.isEmpty || selectedFilters.allSatisfy { filter in
+                switch filter {
+                case .freeDelivery:
+                    return restaurant.deliveryCost == 0
+                case .lowDeliveryFee:
+                    return restaurant.cuisines.contains { $0.uniqueName == "low-delivery-fee" }
+                case .new:
+                    return restaurant.isNew == true
+                case .deals:
+                    return restaurant.cuisines.contains { $0.uniqueName == "deals" }
+                case .halal:
+                    return restaurant.cuisines.contains { $0.uniqueName == "halal" }
+                case .freebies:
+                    return restaurant.cuisines.contains { $0.uniqueName == "freebies" }
+                case .stampCardRestaurants:
+                    return restaurant.cuisines.contains { $0.uniqueName == "stampcard-restaurants" }
+                case .fourStar:
+                    return restaurant.rating.starRating >= 4
+                case .openNow:
+                    return restaurant.isOpenNowForDelivery || restaurant.isOpenNowForCollection
+                case .eightOff:
+                    return restaurant.cuisines.contains { $0.uniqueName == "8off" }
+                }
+            }
+            
+            return matchOption && matchCuisine && matchFlavour && matchSearchText && matchFilters
         }
         .sorted { $0.driveDistanceMeters < $1.driveDistanceMeters}
         
@@ -180,10 +202,10 @@ struct JETView: View {
                                     Text("Delivery")
                                 }
                             }
-                               // .padding()
-                                .background(selectedOption == .delivery ? Color.orange: Color.clear)
-                                .cornerRadius(8)
-                               .foregroundColor(selectedOption == .delivery ? Color.white : Color.primary)
+                            // .padding()
+                            .background(selectedOption == .delivery ? Color.orange: Color.clear)
+                            .cornerRadius(8)
+                            .foregroundColor(selectedOption == .delivery ? Color.white : Color.primary)
                         }
                         
                         Button(action: {
@@ -195,11 +217,11 @@ struct JETView: View {
                                     Text("Collection")
                                 }
                             }
-                               // .padding()
-                                .background(selectedOption == .collection ? Color.orange: Color.clear)
-                                .cornerRadius(8)
-                                .foregroundColor(selectedOption == .collection ? Color.white : Color.primary)
-                              // .foregroundColor(selectedOption == .delivery ? Color.white : Color.black)
+                            // .padding()
+                            .background(selectedOption == .collection ? Color.orange: Color.clear)
+                            .cornerRadius(8)
+                            .foregroundColor(selectedOption == .collection ? Color.white : Color.primary)
+                            // .foregroundColor(selectedOption == .delivery ? Color.white : Color.black)
                         }
                         
                         
@@ -207,7 +229,7 @@ struct JETView: View {
                     }
                     .font(.system(size: 15))
                     .animation(.default)
-                   // .padding(.trailing, 2)
+                    // .padding(.trailing, 2)
                     //.padding(.leading, 10)
                 }
                 .padding()
@@ -215,14 +237,14 @@ struct JETView: View {
                 if isPostcodeEntered {
                     
                     /**Button(action: {
-                        viewController.fetchRestaurantInfo()
-                        showNoRestaurant = false
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                            showNoRestaurant = true
-                        }
-                    }) {
-                        Text("Get Restaurants")
-                    } */
+                     viewController.fetchRestaurantInfo()
+                     showNoRestaurant = false
+                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                     showNoRestaurant = true
+                     }
+                     }) {
+                     Text("Get Restaurants")
+                     } */
                     
                     if !viewController.restaurantsFound && showNoRestaurant {
                         noRestaurantView()
@@ -287,21 +309,38 @@ struct JETView: View {
                             } .padding(.horizontal, 10)
                             
                         }
-                        /**ScrollView(.horizontal, showsIndicators: false) {
+                        ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 15) {
-                                OptionItems(text: "Deals")
-                                OptionItems(text: "StampCards")
-                                OptionItems(text: "Free Delivery")
-                                OptionItems(text: "4+ stars")
-                                OptionItems(text: "Open now")
-                                OptionItems(text: "New")
-                                OptionItems(text: "Hygiene Rating 3+ / Pass")
-                                OptionItems(text: "Halal")
-                                
+                                ForEach(FilterType.allCases, id: \.self) { filter in
+                                    Button(action: {
+                                        if selectedFilters.contains(filter) {
+                                            selectedFilters.remove(filter)
+                                        } else {
+                                            selectedFilters.insert(filter)
+                                        }
+                                    }) {
+                                        CategoryItems2(text: filter.rawValue.replacingOccurrences(of: "_", with: " ").capitalized, isSelected: selectedFilters.contains(filter))
+                                    }
+                                }
                             }
-                            .padding(.horizontal)
-                            .padding(.top, 15)
-                        } */
+                            //   .padding(.horizontal)
+                            //   .padding(.top, 15)
+                        }
+                        /**ScrollView(.horizontal, showsIndicators: false) {
+                         HStack(spacing: 15) {
+                         OptionItems(text: "Deals")
+                         OptionItems(text: "StampCards")
+                         OptionItems(text: "Free Delivery")
+                         OptionItems(text: "4+ stars")
+                         OptionItems(text: "Open now")
+                         OptionItems(text: "New")
+                         OptionItems(text: "Hygiene Rating 3+ / Pass")
+                         OptionItems(text: "Halal")
+                         
+                         }
+                         .padding(.horizontal)
+                         .padding(.top, 15)
+                         } */
                         
                         /** ScrollView(.horizontal, showsIndicators: false) {
                          HStack(spacing: 15) {
@@ -314,6 +353,7 @@ struct JETView: View {
                          }
                          
                          */
+                        
                         
                         ScrollView(.vertical) {
                             // Image(systemName: "globe")
@@ -446,6 +486,32 @@ struct CategoryItems: View {
             // .foregroundColor(Color.black)
             //.foregroundColor(Color(#242E30))
                 .fontWeight(isSelected ? .bold : .regular)
+        }
+    }
+}
+
+struct CategoryItems2: View {
+    // let image: String
+    let text: String
+    let isSelected: Bool
+    
+    var body: some View {
+        VStack {
+            ZStack {
+                /**   if isSelected {
+                 RoundedRectangle(cornerRadius: 15)
+                 .fill(Color.orange.opacity(2))
+                 //  .frame(width:55, height: 50)
+                 //  .opacity(isSelected ? 1 : 0)
+                 } */
+                Text(text)
+                    .font(.caption)
+                // .foregroundColor(Color.black)
+                //.foregroundColor(Color(#242E30))
+                    .fontWeight(isSelected ? .bold : .regular)
+                    .foregroundColor(isSelected ? Color.orange : Color(.systemGray))
+                
+            }
         }
     }
 }

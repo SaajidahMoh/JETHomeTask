@@ -45,99 +45,103 @@ struct RestaurantListView:View {
                     
                 }
                 
-               // Text(restaurant.cuisines.map { $0.name }.joined(separator: ", "))
+                // Text(restaurant.cuisines.map { $0.name }.joined(separator: ", "))
                 Text(restaurant.cuisines.filter { cuisine in
                     !["low-delivery-fee", "deals", "stampcard-restaurants", "halal", "freebies", "8off"].contains(cuisine.uniqueName)}.map{ $0.name }.joined(separator: ", "))
+                .font(.system(size: 13))
                 
                 Text(restaurant.cuisines.filter { cuisine in
                     ["low-delivery-fee", "deals", "stampcard-restaurants", "halal", "freebies", "8off"].contains(cuisine.uniqueName)}.map{ $0.name }.joined(separator: ", "))
-                  
+                .font(.system(size: 11))
+                
                 //  "]} { $0.name }.joined(separator: ", "))
-                    .font(.subheadline)
+                //  .font(.subheadline)
                 //  Text("\(formatRating(restaurant.rating.starRating)) (\(restaurant.rating.count))")
                 //  Text("\(formatRating(restaurant.driveDistance))")
                 //     Text(restaurant.address.location)
                 Text("\(restaurant.address.firstLine), \(restaurant.address.postalCode)")
-                    .font(.system(size: 14))
-                    //.padding(.bottom, 10)
+                    .font(.system(size: 12))
+                //.padding(.bottom, 10)
                 // Text(" \(restaurant.isCollection == true ? "Collection" : "")")
                 // Text(" \(restaurant.isDelivery == true ? "Delivery" : "")")
                 
-               /** if restaurant.isDelivery && restaurant.isOpenNowForDelivery {
-                    HStack(spacing: 0) {
-                        Image(systemName: "bicycle")
-                        Text("Open")
-                    }
-                }
-                
-                if restaurant.isCollection && restaurant.isOpenNowForCollection {
-                    HStack(spacing: 0) {
-                        Image(systemName: "cart")
-                        Text("Open")
-                    }
-                } */
+                /** if restaurant.isDelivery && restaurant.isOpenNowForDelivery {
+                 HStack(spacing: 0) {
+                 Image(systemName: "bicycle")
+                 Text("Open")
+                 }
+                 }
+                 
+                 if restaurant.isCollection && restaurant.isOpenNowForCollection {
+                 HStack(spacing: 0) {
+                 Image(systemName: "cart")
+                 Text("Open")
+                 }
+                 } */
                 HStack {
-                    if (restaurant.deliveryCost > 0) {
-                        HStack(spacing: 0) {
-                            Image(systemName: "bicycle")
-                            Text("\(restaurant.deliveryEtaMinutes?.rangeLower ?? 0)-\(restaurant.deliveryEtaMinutes?.rangeUpper ?? 0) mins")
+                    HStack {
+                        if (restaurant.isDelivery && restaurant.isOpenNowForDelivery) || (restaurant.isCollection && restaurant.isOpenNowForCollection)
+                        {
+                            Text("Open")
+                                .font(.system(size: 12))
+                                .foregroundColor(.green)
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 4)
+                                .background(Color.green.opacity(0.1))
+                                .cornerRadius(4)
+                        } else {
+                            Text("Closed")
+                                .font(.system(size: 12))
+                                .foregroundColor(.red)
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 4)
+                                .background(Color.red.opacity(0.1))
+                                .cornerRadius(4)
                         }
-                        .font(.system(size: 14))
-                        .foregroundColor(.orange)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 4)
-                        .background(Color.orange.opacity(0.1))
-                        .cornerRadius(4)
+                        
+                        if (restaurant.deliveryCost > 0) {
+                            HStack(spacing: 0) {
+                                Image(systemName: "bicycle")
+                                Text("\(restaurant.deliveryEtaMinutes?.rangeLower ?? 0)-\(restaurant.deliveryEtaMinutes?.rangeUpper ?? 0) mins")
+                            }
+                            .font(.system(size: 10))
+                            .foregroundColor(.orange)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(Color.orange.opacity(0.1))
+                            .cornerRadius(4)
+                        }
+                        
+                        if (restaurant.driveDistanceMeters > 0 ) {
+                            HStack(spacing: 0) {
+                                Image(systemName: "mappin.and.ellipse")
+                                Text("\(metersToMiles(Double(restaurant.driveDistanceMeters))) miles")
+                            }
+                            .font(.system(size: 10))
+                            .foregroundColor(.orange)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(Color.orange.opacity(0.1))
+                            .cornerRadius(4)
+                        }
                     }
                     
-                    if (restaurant.driveDistanceMeters > 0 ) {
-                        HStack(spacing: 0) {
-                            Image(systemName: "mappin.and.ellipse")
-                            Text("\(metersToMiles(Double(restaurant.driveDistanceMeters))) miles")
-                        }
-                        .font(.system(size: 14))
-                        .foregroundColor(.orange)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 4)
-                        .background(Color.orange.opacity(0.1))
-                        .cornerRadius(4)
-                    }
+                    /**  HStack {
+                     Image(systemName: "bicycle")
+                     Text("\(restaurant.deliveryEtaMinutes.rangeLower) - \(restaurant.deliveryEtaMinutes.rangeUpper) mins")
+                     .foregroundColor(.orange)
+                     .padding(.horizontal, 8)
+                     .padding(.vertical, 4)
+                     .background(Color.orange.opacity(0.1))
+                     .cornerRadius(4)
+                     } */
+                    //   Text("\(restaurant.driveDistanceMeters)")
+                    // Text(restaurant.isDelivery)
+                    
+                    //  Text("[\(restaurant.address.location.coordinates.first.map{"\($0)"} ?? "0.0"), \(restaurant.address.location.coordinates.last.map{"\($0)"} ?? "0.0")]")
+                    //             Text (restaurant.deals.description)
+                    //   Text (restaurant.deals.offerType)
                 }
-                
-                if (restaurant.isDelivery && restaurant.isOpenNowForDelivery) || (restaurant.isCollection && restaurant.isOpenNowForCollection)
-                {
-                    Text("Open")
-                        .font(.system(size: 14))
-                        .foregroundColor(.green)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 4)
-                        .background(Color.green.opacity(0.1))
-                        .cornerRadius(4)
-                } else {
-                    Text("Closed")
-                        .font(.system(size: 14))
-                        .foregroundColor(.red)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 4)
-                        .background(Color.red.opacity(0.1))
-                        .cornerRadius(4)
-                }
-                
-              /**  HStack {
-                    Image(systemName: "bicycle")
-                    Text("\(restaurant.deliveryEtaMinutes.rangeLower) - \(restaurant.deliveryEtaMinutes.rangeUpper) mins")
-                        .foregroundColor(.orange)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 4)
-                        .background(Color.orange.opacity(0.1))
-                        .cornerRadius(4)
-                } */
-             //   Text("\(restaurant.driveDistanceMeters)")
-                // Text(restaurant.isDelivery)
-                
-                //  Text("[\(restaurant.address.location.coordinates.first.map{"\($0)"} ?? "0.0"), \(restaurant.address.location.coordinates.last.map{"\($0)"} ?? "0.0")]")
-                //             Text (restaurant.deals.description)
-                //   Text (restaurant.deals.offerType)
             }  .padding(.bottom, 10)
         }
         .padding(.leading, 15)
@@ -156,10 +160,10 @@ struct RestaurantListView:View {
     }
     
     func metersToMiles( _ meters: Double) -> String {
-            let miles = meters * 0.000621371
-            let milesValue = String(format: "%.2f", miles)
-            return milesValue
-            
-        }
+        let miles = meters * 0.000621371
+        let milesValue = String(format: "%.2f", miles)
+        return milesValue
+        
+    }
     
 }
