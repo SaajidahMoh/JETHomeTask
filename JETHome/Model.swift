@@ -20,8 +20,16 @@ struct Restaurant: Decodable {
     let isDelivery: Bool
     let isOpenNowForDelivery: Bool
     let deals: [Deals]
+   // let deliveryEtaMinutes: deliveryEtaMinutes
+    let driveDistanceMeters: Int
+//    let deliveryCost: Int
         //    let driveDistance: Float
 }
+//struct deliveryEtaMinutes: Decodable {
+  //  let rangeLower: Double
+   // let rangeUpper: Float
+//}
+    
 struct Address: Decodable {
     let city: String
     let firstLine: String

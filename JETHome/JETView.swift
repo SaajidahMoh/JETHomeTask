@@ -87,6 +87,7 @@ struct JETView: View {
             
             return matchOption && matchCuisine && matchFlavour && matchSearchText
         }
+        .sorted { $0.driveDistanceMeters < $1.driveDistanceMeters}
         
         
         // switch selectedOption {

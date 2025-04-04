@@ -69,25 +69,50 @@ struct RestaurantListView:View {
                         Text("Open")
                     }
                 } */
-                
-                if (restaurant.isDelivery && restaurant.isOpenNowForDelivery) || (restaurant.isCollection && restaurant.isOpenNowForCollection)
-                {
-                    Text("Open")
+                HStack {
+                    if (restaurant.isDelivery && restaurant.isOpenNowForDelivery) || (restaurant.isCollection && restaurant.isOpenNowForCollection)
+                    {
+                        Text("Open")
+                            .font(.system(size: 14))
+                            .foregroundColor(.green)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(Color.green.opacity(0.1))
+                            .cornerRadius(4)
+                    } else {
+                        Text("Closed")
+                            .font(.system(size: 14))
+                            .foregroundColor(.red)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(Color.red.opacity(0.1))
+                            .cornerRadius(4)
+                    }
+                    
+                    if (restaurant.driveDistanceMeters > 0 ) {
+                        HStack(spacing: 0) {
+                            Image(systemName: "location")
+                            Text("\(metersToMiles(Double(restaurant.driveDistanceMeters))) miles")
+                        }
                         .font(.system(size: 14))
-                        .foregroundColor(.green)
+                        .foregroundColor(.orange)
                         .padding(.horizontal, 8)
                         .padding(.vertical, 4)
-                        .background(Color.green.opacity(0.1))
+                        .background(Color.orange.opacity(0.1))
                         .cornerRadius(4)
-                } else {
-                    Text("Closed")
-                        .font(.system(size: 14))
-                        .foregroundColor(.red)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 4)
-                        .background(Color.red.opacity(0.1))
-                        .cornerRadius(4)
+                    }
                 }
+                
+              /**  HStack {
+                    Image(systemName: "bicycle")
+                    Text("\(restaurant.deliveryEtaMinutes.rangeLower) - \(restaurant.deliveryEtaMinutes.rangeUpper) mins")
+                        .foregroundColor(.orange)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(Color.orange.opacity(0.1))
+                        .cornerRadius(4)
+                } */
+             //   Text("\(restaurant.driveDistanceMeters)")
                 // Text(restaurant.isDelivery)
                 
                 //  Text("[\(restaurant.address.location.coordinates.first.map{"\($0)"} ?? "0.0"), \(restaurant.address.location.coordinates.last.map{"\($0)"} ?? "0.0")]")
@@ -109,5 +134,12 @@ struct RestaurantListView:View {
             return ratingValue.trimmingCharacters(in: CharacterSet(charactersIn: "0").union(.punctuationCharacters))
         }
     }
+    
+    func metersToMiles( _ meters: Double) -> String {
+            let miles = meters * 0.000621371
+            let milesValue = String(format: "%.2f", miles)
+            return milesValue
+            
+        }
     
 }
