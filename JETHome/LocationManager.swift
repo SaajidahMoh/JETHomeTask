@@ -13,6 +13,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObje
    // @Published var lastKnownLocation: CLLocationCoordinate2D?
     @Published var postcode: String? //Postcode
     var hasSetPostcode = false //ensuring postcode is set once
+    @Published var userLocation: CLLocationCoordinate2D?
     
     var manager = CLLocationManager()
     private var geocoder = CLGeocoder() //Geocoder
@@ -39,15 +40,16 @@ final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObje
         case .denied://The user dennied your app to get location or disabled the services location or the phone is in airplane mode
             print("Location denied")
             
-        case .authorizedAlways://This authorization allows you to use all location services and receive location events whether or not your app is in use.
-            print("Location authorizedAlways")
+     //   case .authorizedAlways://This authorization allows you to use all location services and receive location events whether or not your app is in use.
+                //            print("Location authorizedAlways")
             
-        case .authorizedWhenInUse://This authorization allows you to use all location services and receive location events only when your app is in use
-            print("Location authorized when in use")
+        case .authorizedWhenInUse, .authorizedAlways://This authorization allows you to use all location services and receive location events only when your app is in use
+           // print("Location authorized when in use")
             //lastKnownLocation = manager.location?.coordinate
            // reverseGeocodeLocation (coordinate: lastKnownLocation)
             if let location = manager.location?.coordinate, !hasSetPostcode {
                                        reverseGeocodeLocation(coordinate: location)
+                userLocation = location
                                    }
             
         @unknown default:
@@ -64,6 +66,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObje
         // lastKnownLocation = locations.first?.coordinate
         if let location = manager.location?.coordinate, !hasSetPostcode {
                                    reverseGeocodeLocation(coordinate: location)
+            userLocation = location
                                }
     }
     

@@ -131,7 +131,6 @@ struct JETView: View {
                  .padding(.leading, 20) */
                 
                 HStack {
-                    HStack(spacing: 0) {
                     Button(action: {
                         showLocationAlert = true
                     }) {
@@ -151,40 +150,64 @@ struct JETView: View {
                             secondaryButton: .cancel()
                         )
                     }
-                    .padding(.leading, 20)
                     
                     TextField("Enter postcode", text: $viewController.postcode)
                         .onChange(of: viewController.postcode) { newValue in
                             isPostcodeEntered = !newValue.isEmpty
                             viewController.fetchRestaurantInfo()
-                        //    showNoRestaurant = false
-                          //  DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                          //      showNoRestaurant = true
-                         //   }
+                            //    showNoRestaurant = false
+                            //  DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                            //      showNoRestaurant = true
+                            //   }
+                            
                         }
-                    
-                }
+                    //   }
                         .padding(.leading, 20)
                     // .padding(.trailing, 20)
                     
-                    
-                    Button(action: {
-                        selectedOption = .delivery
-                    }) {
-                        Text("Delivery")
+                    HStack {
+                        Button(action: {
+                            selectedOption = .delivery
+                        }) {
+                            HStack {
+                                Image(systemName: "bicycle")
+                                if  selectedOption == .delivery {
+                                    Text("Delivery")
+                                }
+                            }
+                               // .padding()
+                                .background(selectedOption == .delivery ? Color.orange: Color.clear)
+                                .cornerRadius(8)
+                               .foregroundColor(selectedOption == .delivery ? Color.white : Color.primary)
+                        }
+                        
+                        Button(action: {
+                            selectedOption = .collection
+                        }) {
+                            HStack {
+                                Image(systemName: "bag")
+                                if  selectedOption == .collection {
+                                    Text("Collection")
+                                }
+                            }
+                               // .padding()
+                                .background(selectedOption == .collection ? Color.orange: Color.clear)
+                                .cornerRadius(8)
+                                .foregroundColor(selectedOption == .collection ? Color.white : Color.primary)
+                              // .foregroundColor(selectedOption == .delivery ? Color.white : Color.black)
+                        }
+                        
+                        
+                        
                     }
-                    
-                    Button(action: {
-                        selectedOption = .collection
-                    }) {
-                        Text("Collection")
-                    }
-                    
+                    .animation(.default)
+                    //.padding(.leading, 10)
                 }
+                .padding()
                 
                 if isPostcodeEntered {
                     
-                   /** Button(action: {
+                    /**Button(action: {
                         viewController.fetchRestaurantInfo()
                         showNoRestaurant = false
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
