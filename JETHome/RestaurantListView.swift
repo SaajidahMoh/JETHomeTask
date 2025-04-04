@@ -45,7 +45,14 @@ struct RestaurantListView:View {
                     
                 }
                 
-                Text(restaurant.cuisines.map { $0.name }.joined(separator: ", "))
+               // Text(restaurant.cuisines.map { $0.name }.joined(separator: ", "))
+                Text(restaurant.cuisines.filter { cuisine in
+                    !["low-delivery-fee", "deals", "stampcard-restaurants", "halal", "freebies", "8off"].contains(cuisine.uniqueName)}.map{ $0.name }.joined(separator: ", "))
+                
+                Text(restaurant.cuisines.filter { cuisine in
+                    ["low-delivery-fee", "deals", "stampcard-restaurants", "halal", "freebies", "8off"].contains(cuisine.uniqueName)}.map{ $0.name }.joined(separator: ", "))
+                  
+                //  "]} { $0.name }.joined(separator: ", "))
                     .font(.subheadline)
                 //  Text("\(formatRating(restaurant.rating.starRating)) (\(restaurant.rating.count))")
                 //  Text("\(formatRating(restaurant.driveDistance))")
@@ -70,28 +77,22 @@ struct RestaurantListView:View {
                     }
                 } */
                 HStack {
-                    if (restaurant.isDelivery && restaurant.isOpenNowForDelivery) || (restaurant.isCollection && restaurant.isOpenNowForCollection)
-                    {
-                        Text("Open")
-                            .font(.system(size: 14))
-                            .foregroundColor(.green)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 4)
-                            .background(Color.green.opacity(0.1))
-                            .cornerRadius(4)
-                    } else {
-                        Text("Closed")
-                            .font(.system(size: 14))
-                            .foregroundColor(.red)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 4)
-                            .background(Color.red.opacity(0.1))
-                            .cornerRadius(4)
+                    if (restaurant.deliveryCost > 0) {
+                        HStack(spacing: 0) {
+                            Image(systemName: "bicycle")
+                            Text("\(restaurant.deliveryEtaMinutes?.rangeLower ?? 0)-\(restaurant.deliveryEtaMinutes?.rangeUpper ?? 0) mins")
+                        }
+                        .font(.system(size: 14))
+                        .foregroundColor(.orange)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(Color.orange.opacity(0.1))
+                        .cornerRadius(4)
                     }
                     
                     if (restaurant.driveDistanceMeters > 0 ) {
                         HStack(spacing: 0) {
-                            Image(systemName: "location")
+                            Image(systemName: "mappin.and.ellipse")
                             Text("\(metersToMiles(Double(restaurant.driveDistanceMeters))) miles")
                         }
                         .font(.system(size: 14))
@@ -101,6 +102,25 @@ struct RestaurantListView:View {
                         .background(Color.orange.opacity(0.1))
                         .cornerRadius(4)
                     }
+                }
+                
+                if (restaurant.isDelivery && restaurant.isOpenNowForDelivery) || (restaurant.isCollection && restaurant.isOpenNowForCollection)
+                {
+                    Text("Open")
+                        .font(.system(size: 14))
+                        .foregroundColor(.green)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(Color.green.opacity(0.1))
+                        .cornerRadius(4)
+                } else {
+                    Text("Closed")
+                        .font(.system(size: 14))
+                        .foregroundColor(.red)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(Color.red.opacity(0.1))
+                        .cornerRadius(4)
                 }
                 
               /**  HStack {

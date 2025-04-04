@@ -19,6 +19,7 @@ struct JETView: View {
     @State private var selectedCuisine: CuisineType? = nil //.all
     //@State private var selectedFlavour: FlavourType? = nil
     @State private var selectedFlavour: Set<FlavourType> = []
+    @State private var selectedFilters: Set<FilterType> = []
     @State private var isPostcodeEntered: Bool = false
     @State private var showPostcodeSheet: Bool = false
     @State private var searchText: String = ""
@@ -39,10 +40,12 @@ struct JETView: View {
     }
     
     enum FlavourType : String, CaseIterable {
+        case vegeterian = "vegetarian"
         case chicken = "chicken"
         case burgers = "burgers"
         case american = "american"
         case periperi = "peri-peri"
+        case pizza = "pizza"
         case sandwiches = "sandwiches"
         case kebabs = "kebabs"
         case breakfast = "breakfast"
@@ -50,17 +53,18 @@ struct JETView: View {
     }
     
     enum FilterType: String {
-        case freeDelivery = "free_delivery"
+        case freeDelivery = "free-delivery"
         case lowDeliveryFee = "low-delivery-fee"
         case new = "new"
-        case stampCards = "stampcards"
+        case deals = "deals"
+        case halal = "halal"
+        case freebies = "freebies"
         case stampCardRestaurants = "stampcard-restaurants"
         case fourStar = "four_star"
-        case fsa = "fsa"
+        //case fsa = "fsa"
         case openNow = "open_now"
-        case percentOffWednesdays = "percentoffwednesdays"
-        case freebies = "freebies"
-        case withDiscounts = "with_discounts"
+        //case percentOffWednesdays = "percentoffwednesdays"
+        //case withDiscounts = "with_discounts"
         case eightOff = "8off"
     }
     
@@ -85,7 +89,7 @@ struct JETView: View {
             
             let matchSearchText = searchText.isEmpty || restaurant.name.lowercased().contains(searchText.lowercased())
             
-            return matchOption && matchCuisine && matchFlavour && matchSearchText
+            return matchOption && matchCuisine && matchFlavour && matchSearchText //&& matchFilters
         }
         .sorted { $0.driveDistanceMeters < $1.driveDistanceMeters}
         
@@ -201,7 +205,9 @@ struct JETView: View {
                         
                         
                     }
+                    .font(.system(size: 15))
                     .animation(.default)
+                   // .padding(.trailing, 2)
                     //.padding(.leading, 10)
                 }
                 .padding()
@@ -281,8 +287,7 @@ struct JETView: View {
                             } .padding(.horizontal, 10)
                             
                         }
-                        
-                        ScrollView(.horizontal, showsIndicators: false) {
+                        /**ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 15) {
                                 OptionItems(text: "Deals")
                                 OptionItems(text: "StampCards")
@@ -296,7 +301,8 @@ struct JETView: View {
                             }
                             .padding(.horizontal)
                             .padding(.top, 15)
-                        }
+                        } */
+                        
                         /** ScrollView(.horizontal, showsIndicators: false) {
                          HStack(spacing: 15) {
                          CategoryItems(image: "european", title: "Restaurants", isSelected: false)
