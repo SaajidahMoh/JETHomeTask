@@ -49,6 +49,21 @@ struct JETView: View {
         case chinese = "chinese"
     }
     
+    enum FilterType: String {
+        case freeDelivery = "free_delivery"
+        case lowDeliveryFee = "low-delivery-fee"
+        case new = "new"
+        case stampCards = "stampcards"
+        case stampCardRestaurants = "stampcard-restaurants"
+        case fourStar = "four_star"
+        case fsa = "fsa"
+        case openNow = "open_now"
+        case percentOffWednesdays = "percentoffwednesdays"
+        case freebies = "freebies"
+        case withDiscounts = "with_discounts"
+        case eightOff = "8off"
+    }
+    
     var filteredRestaurants : [Restaurant] {
         viewController.restaurants.filter {
             restaurant in
@@ -116,12 +131,7 @@ struct JETView: View {
                  .padding(.leading, 20) */
                 
                 HStack {
-                    TextField("Enter postcode", text: $viewController.postcode)
-                        .onChange(of: viewController.postcode) { newValue in
-                            isPostcodeEntered = !newValue.isEmpty
-                        }
-                    
-                    Spacer()
+                    HStack(spacing: 0) {
                     Button(action: {
                         showLocationAlert = true
                     }) {
@@ -141,11 +151,23 @@ struct JETView: View {
                             secondaryButton: .cancel()
                         )
                     }
+                    .padding(.leading, 20)
+                    
+                    TextField("Enter postcode", text: $viewController.postcode)
+                        .onChange(of: viewController.postcode) { newValue in
+                            isPostcodeEntered = !newValue.isEmpty
+                            viewController.fetchRestaurantInfo()
+                        //    showNoRestaurant = false
+                          //  DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                          //      showNoRestaurant = true
+                         //   }
+                        }
+                    
                 }
-                .padding(.leading, 20)
-                // .padding(.trailing, 20)
-                
-                HStack {
+                        .padding(.leading, 20)
+                    // .padding(.trailing, 20)
+                    
+                    
                     Button(action: {
                         selectedOption = .delivery
                     }) {
@@ -162,7 +184,7 @@ struct JETView: View {
                 
                 if isPostcodeEntered {
                     
-                    Button(action: {
+                   /** Button(action: {
                         viewController.fetchRestaurantInfo()
                         showNoRestaurant = false
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -170,7 +192,7 @@ struct JETView: View {
                         }
                     }) {
                         Text("Get Restaurants")
-                    }
+                    } */
                     
                     if !viewController.restaurantsFound && showNoRestaurant {
                         noRestaurantView()

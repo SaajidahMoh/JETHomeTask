@@ -12,6 +12,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObje
     
    // @Published var lastKnownLocation: CLLocationCoordinate2D?
     @Published var postcode: String? //Postcode
+    var hasSetPostcode = false //ensuring postcode is set once
     
     var manager = CLLocationManager()
     private var geocoder = CLGeocoder() //Geocoder
@@ -45,7 +46,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObje
             print("Location authorized when in use")
             //lastKnownLocation = manager.location?.coordinate
            // reverseGeocodeLocation (coordinate: lastKnownLocation)
-            if let location = manager.location?.coordinate {
+            if let location = manager.location?.coordinate, !hasSetPostcode {
                                        reverseGeocodeLocation(coordinate: location)
                                    }
             
@@ -61,7 +62,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObje
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         // lastKnownLocation = locations.first?.coordinate
-        if let location = manager.location?.coordinate {
+        if let location = manager.location?.coordinate, !hasSetPostcode {
                                    reverseGeocodeLocation(coordinate: location)
                                }
     }
