@@ -10,7 +10,7 @@ import CoreLocation
 
 final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     
-   // @Published var lastKnownLocation: CLLocationCoordinate2D?
+    // @Published var lastKnownLocation: CLLocationCoordinate2D?
     @Published var postcode: String? //Postcode
     var hasSetPostcode = false //ensuring postcode is set once
     @Published var userLocation: CLLocationCoordinate2D?
@@ -21,11 +21,11 @@ final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObje
     private var geocoder = CLGeocoder() //Geocoder
     
     override init() {
-                super.init()
-                manager.delegate = self
-                manager.startUpdatingLocation()
-                checkLocationAuthorization()
-            }
+        super.init()
+        manager.delegate = self
+        manager.startUpdatingLocation()
+        checkLocationAuthorization()
+    }
     
     func checkLocationAuthorization() {
         
@@ -43,21 +43,21 @@ final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObje
             print("Location denied")
             locationDisabledAlert = true
             
-     //   case .authorizedAlways://This authorization allows you to use all location services and receive location events whether or not your app is in use.
-                //            print("Location authorizedAlways")
+            //   case .authorizedAlways://This authorization allows you to use all location services and receive location events whether or not your app is in use.
+            //            print("Location authorizedAlways")
             
         case .authorizedWhenInUse, .authorizedAlways://This authorization allows you to use all location services and receive location events only when your app is in use
-           // print("Location authorized when in use")
+            // print("Location authorized when in use")
             //lastKnownLocation = manager.location?.coordinate
-           // reverseGeocodeLocation (coordinate: lastKnownLocation)
+            // reverseGeocodeLocation (coordinate: lastKnownLocation)
             if let location = manager.location?.coordinate, !hasSetPostcode {
-                                       reverseGeocodeLocation(coordinate: location)
+                reverseGeocodeLocation(coordinate: location)
                 userLocation = location
-                                   }
+            }
             
         @unknown default:
             print("Location service disabled")
-        
+            
         }
     }
     
@@ -68,9 +68,9 @@ final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObje
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         // lastKnownLocation = locations.first?.coordinate
         if let location = manager.location?.coordinate, !hasSetPostcode {
-                                   reverseGeocodeLocation(coordinate: location)
+            reverseGeocodeLocation(coordinate: location)
             userLocation = location
-                               }
+        }
     }
     
     // get postcode by reversing geocode
@@ -80,17 +80,17 @@ final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObje
         let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
         
         geocoder.reverseGeocodeLocation(location, preferredLocale: Locale(identifier:"en_GB")) { [weak self] placemarks, error in
-                    if let error = error {
-                        print("Error during reverse geocoding: \(error.localizedDescription)")
-                        return
-                    }
-                    
-                    if let placemark = placemarks?.first, let postcode = placemark.postalCode {
-                        DispatchQueue.main.async {
-                            self?.postcode = postcode
-                        }
-                    }
+            if let error = error {
+                print("Error during reverse geocoding: \(error.localizedDescription)")
+                return
+            }
+            
+            if let placemark = placemarks?.first, let postcode = placemark.postalCode {
+                DispatchQueue.main.async {
+                    self?.postcode = postcode
                 }
+            }
+        }
     }
     
     // adapted to implemenet an alert and checking its not denied

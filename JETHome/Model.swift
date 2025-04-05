@@ -24,7 +24,6 @@ struct Restaurant: Decodable {
     let driveDistanceMeters: Int
     let deliveryCost: Float
     let isNew: Bool
-        //    let driveDistance: Float
 }
  struct DeliveryEtaMinutes: Decodable {
     let rangeLower: Int

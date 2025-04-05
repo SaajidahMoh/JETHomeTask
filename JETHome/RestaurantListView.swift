@@ -44,14 +44,13 @@ struct RestaurantListView:View {
                             Text(formatRating(restaurant.rating.starRating))
                                 .font(.system(size: 16, weight: .medium))
                                 .foregroundColor(.primary)
-                            // Text("(\(restaurant.rating.count))")
+                            
                             if restaurant.rating.count > 0 {
                                 Text("(\(restaurant.rating.count > 200 ? "200+" : "\(restaurant.rating.count)"))")
                                     .font(.system(size: 14, weight: .medium))
                                     .foregroundColor(.gray)
                             }
                         }
-                        
                     }
                     
                     if !filteredCuisines.isEmpty {
@@ -70,33 +69,11 @@ struct RestaurantListView:View {
                         .padding(.leading, 1)
                     }
                     
-                    //  "]} { $0.name }.joined(separator: ", "))
-                    //  .font(.subheadline)
-                    //  Text("\(formatRating(restaurant.rating.starRating)) (\(restaurant.rating.count))")
-                    //  Text("\(formatRating(restaurant.driveDistance))")
-                    //     Text(restaurant.address.location)
                     Text("\(restaurant.address.firstLine), \(restaurant.address.postalCode)")
                         .font(.system(size: 12))
                         .foregroundColor(.primary)
                         .multilineTextAlignment(.leading)
                     
-                    //.padding(.bottom, 10)
-                    // Text(" \(restaurant.isCollection == true ? "Collection" : "")")
-                    // Text(" \(restaurant.isDelivery == true ? "Delivery" : "")")
-                    
-                    /** if restaurant.isDelivery && restaurant.isOpenNowForDelivery {
-                     HStack(spacing: 0) {
-                     Image(systemName: "bicycle")
-                     Text("Open")
-                     }
-                     }
-                     
-                     if restaurant.isCollection && restaurant.isOpenNowForCollection {
-                     HStack(spacing: 0) {
-                     Image(systemName: "cart")
-                     Text("Open")
-                     }
-                     } */
                     HStack {
                         HStack {
                             if (restaurant.isDelivery && restaurant.isOpenNowForDelivery) || (restaurant.isCollection && restaurant.isOpenNowForCollection)
@@ -145,22 +122,6 @@ struct RestaurantListView:View {
                             }
                         }
                     }
-                    
-                    /**  HStack {
-                     Image(systemName: "bicycle")
-                     Text("\(restaurant.deliveryEtaMinutes.rangeLower) - \(restaurant.deliveryEtaMinutes.rangeUpper) mins")
-                     .foregroundColor(.orange)
-                     .padding(.horizontal, 8)
-                     .padding(.vertical, 4)
-                     .background(Color.orange.opacity(0.1))
-                     .cornerRadius(4)
-                     } */
-                    //   Text("\(restaurant.driveDistanceMeters)")
-                    // Text(restaurant.isDelivery)
-                    
-                    //  Text("[\(restaurant.address.location.coordinates.first.map{"\($0)"} ?? "0.0"), \(restaurant.address.location.coordinates.last.map{"\($0)"} ?? "0.0")]")
-                    //             Text (restaurant.deals.description)
-                    //   Text (restaurant.deals.offerType)
                 }
             }  .padding(.bottom, 10)
         }
@@ -170,6 +131,7 @@ struct RestaurantListView:View {
         .cornerRadius(12)
         .shadow(color: Color.black.opacity(0.08), radius: 5, x: 0, y: 0)
     }
+    
     func formatRating( _ rating: Float) -> String {
         if rating == 0 {
             return "0"
@@ -183,7 +145,6 @@ struct RestaurantListView:View {
         let miles = meters * 0.000621371
         let milesValue = String(format: "%.2f", miles)
         return milesValue
-        
     }
     
 }

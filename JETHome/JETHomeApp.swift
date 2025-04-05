@@ -11,9 +11,7 @@ import SwiftUI
 struct JETHomeApp: App {
     var body: some Scene {
         WindowGroup {
-           // ContentView()
             JETView()
-         //   LocationView()
         }
     }
 }
