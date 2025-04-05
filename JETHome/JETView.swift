@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Kingfisher
+import CoreLocation
 
 
 struct JETView: View {
@@ -127,7 +128,8 @@ struct JETView: View {
     
     
     var body: some View {
-        VStack {
+       // VStack {
+        NavigationView{
             ScrollView {
                 /** -- performance issue  HStack {
                  Button(action: {
@@ -158,36 +160,44 @@ struct JETView: View {
                  .padding(.leading, 20) */
                 
                 HStack {
-                    Button(action: {
-                        showLocationAlert = true
-                    }) {
-                        Image(systemName: "location")
-                            .font(.system(size: 20))
-                            .padding(.trailing)
-                    }
-                    .alert(isPresented: $showLocationAlert) {
-                        Alert(
-                            title: Text("Share Your Location"),
-                            message: Text("Would you like to share your location to find nearby restaurants?"),
-                            primaryButton: .default(Text("Yes")) {
-                                if let postcode = locationManager.postcode {
-                                    viewController.updatePostcode(postcode)
-                                }
-                            },
-                            secondaryButton: .cancel()
-                        )
-                    }
-                    
-                    TextField("Enter postcode", text: $viewController.postcode)
-                        .onChange(of: viewController.postcode) { newValue in
-                            isPostcodeEntered = !newValue.isEmpty
-                            viewController.fetchRestaurantInfo()
-                            //    showNoRestaurant = false
-                            //  DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                            //      showNoRestaurant = true
-                            //   }
-                            
+                    HStack (spacing: 0) {
+                        Button(action: {
+                            if CLLocationManager.locationServicesEnabled() && CLLocationManager.authorizationStatus() != .denied {
+                                showLocationAlert = true
+                            } else {
+                                locationManager.locationDisabledAlert = true
+                               // locationManager.checkLocationAuthorization()
+                            }
+                            //
+                        }) {
+                            Image(systemName: "location")
+                                .font(.system(size: 20))
+                                .padding(.trailing)
                         }
+                        .alert(isPresented: $showLocationAlert) {
+                            Alert(
+                                title: Text("Share Your Location"),
+                                message: Text("Would you like to share your location to find nearby restaurants?"),
+                                primaryButton: .default(Text("Yes")) {
+                                    if let postcode = locationManager.postcode {
+                                        viewController.updatePostcode(postcode)
+                                    }
+                                },
+                                secondaryButton: .cancel()
+                            )
+                        }
+                        
+                        TextField("Enter postcode", text: $viewController.postcode)
+                            .onChange(of: viewController.postcode) { newValue in
+                                isPostcodeEntered = !newValue.isEmpty
+                                viewController.fetchRestaurantInfo()
+                                //    showNoRestaurant = false
+                                //  DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                //      showNoRestaurant = true
+                                //   }
+                                
+                            }
+                    }
                     //   }
                         .padding(.leading, 20)
                     // .padding(.trailing, 20)
@@ -202,7 +212,7 @@ struct JETView: View {
                                     Text("Delivery")
                                 }
                             }
-                            // .padding()
+                             .padding(6)
                             .background(selectedOption == .delivery ? Color.orange: Color.clear)
                             .cornerRadius(8)
                             .foregroundColor(selectedOption == .delivery ? Color.white : Color.primary)
@@ -214,10 +224,10 @@ struct JETView: View {
                             HStack {
                                 Image(systemName: "bag")
                                 if  selectedOption == .collection {
-                                    Text("Collection")
+                                    Text("Collect")
                                 }
                             }
-                            // .padding()
+                             .padding(6)
                             .background(selectedOption == .collection ? Color.orange: Color.clear)
                             .cornerRadius(8)
                             .foregroundColor(selectedOption == .collection ? Color.white : Color.primary)
@@ -322,7 +332,9 @@ struct JETView: View {
                                         CategoryItems2(text: filter.rawValue.replacingOccurrences(of: "_", with: " ").capitalized, isSelected: selectedFilters.contains(filter))
                                     }
                                 }
+                                //    .frame(width: 60, height: 60)
                             }
+                                //.frame(height: 60)
                             //   .padding(.horizontal)
                             //   .padding(.top, 15)
                         }
@@ -370,6 +382,8 @@ struct JETView: View {
                             }
                         }
                         
+                      //  .navigationTitle("Find Places")
+                        //          .navigationBarTitleDisplayMode(.inline)
                         
                         //.background(Color(.systemGroupedBackground).ignoresSafeArea())
                         .onAppear {
@@ -387,6 +401,16 @@ struct JETView: View {
                     noPostcodeView()
                 }
             }
+        }
+        .alert(isPresented: $locationManager.locationDisabledAlert){
+            Alert(
+                title: Text ("Location Disabled"),
+                message: Text("Location Services is off. Please turn it on in Settings"),
+                primaryButton: .default(Text("Settings"), action: {
+                    UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+                }),
+                secondaryButton: .cancel()
+            )
         }
     }
 }
