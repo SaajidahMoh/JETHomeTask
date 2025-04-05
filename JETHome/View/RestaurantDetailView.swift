@@ -7,12 +7,13 @@
 
 import SwiftUI
 import MapKit
-import Kingfisher
 
+// The View that displays more information about the selected restaurant including a Map with the location
 struct RestaurantDetailView: View {
     let restaurant: Restaurant
     @State private var region: MKCoordinateRegion
     
+    // Init initalisation that sets the restaurant and map
     init(restaurant: Restaurant) {
         self.restaurant = restaurant
         
@@ -32,7 +33,8 @@ struct RestaurantDetailView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 VStack(alignment: .leading, spacing: 12) {
-                    // Restaurant name and rating
+                    
+                    // Displays the restaurant name and rating
                     HStack {
                         Text(restaurant.name)
                             .font(.title)
@@ -47,10 +49,11 @@ struct RestaurantDetailView: View {
                                 .fontWeight(.semibold)
                         }
                         .padding(6)
-                        .background(Color.gray.opacity(0.1))
+                        .background(Color.gray.opacity(0.01))
                         .cornerRadius(6)
                     }
                     
+                    // Horizontal scrollview that displays the different cuisines
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
                             ForEach(restaurant.cuisines.filter { cuisine in
@@ -66,6 +69,7 @@ struct RestaurantDetailView: View {
                         }
                     }
                     
+                    // Horizontal scrollview that displays the extras
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
                             ForEach(restaurant.cuisines.filter { cuisine in
@@ -80,7 +84,8 @@ struct RestaurantDetailView: View {
                             }
                         }
                     }
-                    // Address
+                    
+                    // Displays the restaurants address and postcode together
                     HStack {
                         Image(systemName: "location.fill")
                             .foregroundColor(.orange)
@@ -92,7 +97,7 @@ struct RestaurantDetailView: View {
                         Text("MAP:")
                             .font(.headline)
                             .padding(.top, 8)
-                        
+                        // Displays the map with the restaurants location and the current users location
                         Map(coordinateRegion: .constant(region), showsUserLocation: true, annotationItems: [Annotation(coordinate: region.center, tint: .orange)]) { annotation in
                             MapAnnotation(coordinate: annotation.coordinate) {
                                 LocationMapAnnotationView()
@@ -102,7 +107,7 @@ struct RestaurantDetailView: View {
                         .cornerRadius(10)
                     }
                     
-                    // Delivery and collection info
+                    // Displays the delivery and collection information
                     VStack(alignment: .leading) {
                         if restaurant.isDelivery {
                             HStack {
@@ -133,7 +138,7 @@ struct RestaurantDetailView: View {
                         }
                     }
                     
-                    // Restaurant open
+                    // Displays the restaurants operating status (delivery and collection)
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Operating Status:")
                             .font(.headline)
@@ -159,7 +164,6 @@ struct RestaurantDetailView: View {
                                 .font(.subheadline)
                         }
                     }
-                    
                 }
                 .padding()
                 .padding(.leading)
@@ -170,6 +174,7 @@ struct RestaurantDetailView: View {
     }
 }
 
+// The Annotation Struct below was generated from Generative AI to support with the associated compile check error
 struct Annotation: Identifiable {
     let id = UUID()
     let coordinate: CLLocationCoordinate2D

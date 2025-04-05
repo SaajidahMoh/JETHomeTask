@@ -8,11 +8,11 @@ import Foundation
 
 class JETViewModel : ObservableObject {
     @Published var restaurants: [Restaurant] = []
-    @Published var postcode: String = ""
-    //"EC4M7RF"
+    @Published var postcode: String = "" // "EC4M7RF"
     @Published var isLoading: Bool = false
     @Published var restaurantsFound: Bool = false
     
+    // Performs the interaction with the API to get the restaurants information
     func fetchRestaurantInfo(){
         guard !postcode.isEmpty else {
             print ("Enter postcode")

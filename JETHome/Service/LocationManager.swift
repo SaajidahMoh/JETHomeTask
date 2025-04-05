@@ -3,7 +3,9 @@
 //  JETHome
 //
 //  Created by Mohamed, Saajidah on 30/03/2025.
-// https://medium.com/@desilio/getting-user-location-with-swiftui-1f79d23c2321
+
+/**The following was code reused and adapted from the "Getting User Location with SwiftUI"  article to get the users postcode form their current location
+ * Link Available at : https://medium.com/@desilio/getting-user-location-with-swiftui-1f79d23c2321 to get the users postcode from their current location */
 
 import Foundation
 import CoreLocation
@@ -28,7 +30,6 @@ final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObje
     }
     
     func checkLocationAuthorization() {
-        
         manager.delegate = self
         manager.startUpdatingLocation()
         
@@ -39,7 +40,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObje
         case .restricted://The user cannot change this app’s status, possibly due to active restrictions such as parental controls being in place.
             print("Location restricted")
             
-        case .denied://The user dennied your app to get location or disabled the services location or the phone is in airplane mode
+        case .denied://The user denied your app to get location or disabled the services location or the phone is in airplane mode
             print("Location denied")
             locationDisabledAlert = true
             
@@ -47,7 +48,6 @@ final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObje
             //            print("Location authorizedAlways")
             
         case .authorizedWhenInUse, .authorizedAlways://This authorization allows you to use all location services and receive location events only when your app is in use
-            // print("Location authorized when in use")
             //lastKnownLocation = manager.location?.coordinate
             // reverseGeocodeLocation (coordinate: lastKnownLocation)
             if let location = manager.location?.coordinate, !hasSetPostcode {
@@ -57,7 +57,6 @@ final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObje
             
         @unknown default:
             print("Location service disabled")
-            
         }
     }
     
@@ -73,7 +72,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObje
         }
     }
     
-    // get postcode by reversing geocode
+    // Gets the user's postcode by reversing geocode
     func reverseGeocodeLocation(coordinate: CLLocationCoordinate2D?){
         guard let coordinate = coordinate else { return}
         
@@ -93,10 +92,10 @@ final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObje
         }
     }
     
-    // adapted to implemenet an alert and checking its not denied
+    // Adapted to implemenet an alert and checking it is not denied
     func checkIfLocationIsEnabled() {
         print ("Checking if enabled")
-        // as long as it is not denied, it will show the users current location
+        // As long as it is not denied, it will show the users current location
         if CLLocationManager.locationServicesEnabled() && CLLocationManager.authorizationStatus() != .denied {
             locationsManager = CLLocationManager()
             locationsManager?.desiredAccuracy = kCLLocationAccuracyBest
