@@ -15,6 +15,8 @@
 
 ### Device Compatibility
 
+ <img src="https://github.com/user-attachments/assets/708a0a78-b19c-4f07-a0b3-2e2de0b4a3df" alt="DeploymentInstructions" style="width: 90%; height: auto;">
+
 ## Assumptions
 
 - **No User Authentication**: There is no user authentication needed or being able to store/save the users information.
