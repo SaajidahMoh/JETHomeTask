@@ -57,20 +57,22 @@ I found the assignment clear and was able to reach out to Maria if I had any que
 - **No User Authentication**: There is no user authentication needed or being able to store/save the users information.
 - **UK Postcodes**: The application will work only using UK postcodes due to the API. 
 - **API Consistency**: The assumption that the API endpoints would be consistent, reliable and would provide real-time updates based on whether a store is open now for collection/delivery.
+- **Categorising "Restaurants"**: The API returned a variety of categories including restaurants, groceries, convenience stores, alcohol shops and electronic stores which doesn't quite fit the "restaurant" theme. An assumption was made to seperate them if one of the categories were contained in their "UniqueNames".
 - **Display Restaurants**: Must Display the first 10 restaurants.
 - **Separated Filters**: Separating things like “deals”, “free delivery”, “halal”, “freebies” from the actual cuisine types like "Pizza", "American", "Chicken" etc. given that they are not actual cuisines.
 - **Brand Box Usage**: Able to use JET’s Brand Box and images from their application, given that this application is not to be published and is between you and JET.
 - **Device Compatibility**: Application must able to be used on any iOS device (and in portrait mode).
 - **Restaurant Data Points**: Must display the restaurant data points with the restaurant names, cuisines, rating as a number (including the number of ratings) and the address (first line + postcode).
+- 
 
 ## Features Implemented
-- **Restaurant Data Points**: All restaurant data points with the restaurant names, cuisines, rating as a number (including the number of ratings) and the address (first line + postcode) were effectively displayed, with card details respective to their informaiton. 
+- **Restaurant Data Points**: All restaurant data points with the restaurant names, cuisines, rating as a number (including the number of ratings) and the address (first line + postcode) were effectively displayed, with card details respective to their informaiton. I chose to use RESTful API over GraphQL due to its simplicity and efficency in handling large datasets, ensuring quick and easy intergration with minimal complexity. 
 - **Location Search**: Can search for place by seleting on the location button on the top left corner which populates the "Enter Postcode" field with the users current postcode. This would then display the output from the API and sort based on the nearest restaurants. Filters also work.
 - **Decorative Images**: Application pictures were decorative and identified by nearby text, making alt text descriptions not needed for ease for screen readers.
 - **Separated Filters**: Separating things like “deals”, “free delivery”, “halal”, “freebies” from actual cuisine types like "Pizza", "American", "Chicken" etc. given that they are not actual cuisines and for effective filtering capabiltiies to enahnce user experience.
 - **Sorting Restaurants** : Sorting the restuarants, grocieries and other categories in order of nearest. 
 - **Open Restaurants**: Only displaying what is open and near the user in the given API.
-- **Restaurant Data Points**: Displayed the restaurant data points with names, cuisines, rating as a number (including the number of ratings) and the address (first line + postcode).
+- **Functions of Ration and Distance**: Functions were created to ensure restaurant ratings were displayed for a clean interface. Converting distances were also implemented to allow users to see how far they were from the place for collections. 
 
   
 ## The Application 
@@ -102,7 +104,7 @@ I found the assignment clear and was able to reach out to Maria if I had any que
 - **Launch Page:** Implement a seamless launch page for better user experience.
 - **Search Optimisation:** When I used DispatchQueue.main.asyncAfter, there was a delay in showing the current interface. It would always show that the postcode entered was incorrect, but then show the correct interface a few seconds later. I removed this for better user experience, but it can be improved.
 - **Closed Restaurants:** Allow users to search for closed restaurants with a grey overlay and clearly written "closed" so they are aware.
-- **Enhanced Filtering:** Add more filtering capabilities so users don’t have to scroll back and forth. I could implement a separate lazyVGrid with a search at the top to make it accessible and easy for users. I would also implement other sorting capabilities including customer rating, delivery fee and minimum order for orders that have a minimum requirement.
+- **Enhanced Filtering:** Add more filtering capabilities so users don’t have to scroll back and forth and also seeing the number of places that are open or the filter they select. I could implement a separate lazyVGrid with a search at the top to make it accessible and easy for users. I would also implement other sorting capabilities including customer rating, delivery fee and minimum order for orders that have a minimum requirement.
 - **Display Food Hygiene Rating:** All additional filtering have been implemented and gathered from "uniqueNames", except for "open", "new" and "4+ star". It would have been more effective if I was able to effectively get the restaurant's ID and perform filtering based on the ID. This could further simplify my code as opposed to the large criteria-based filtering. 
 
 ## Acknowledgements
