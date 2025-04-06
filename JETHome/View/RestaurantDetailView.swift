@@ -19,9 +19,6 @@ struct RestaurantDetailView: View {
         
         let latitude = Double(restaurant.address.location.coordinates.last ?? 0.0)
         let longitude = Double(restaurant.address.location.coordinates.first ?? 0.0)
-        let initialRegion = MKCoordinateRegion(
-            center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude),
-            span: MKCoordinateSpan(latitudeDelta: 0.0035, longitudeDelta: 0.0035))
         
         self.region = MKCoordinateRegion(
             center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude),
@@ -129,6 +126,7 @@ struct RestaurantDetailView: View {
                                 Text("Collection")
                                     .font(.subheadline)
                                 Spacer()
+                                //  Text("\(metersToMiles(Double(restaurant.driveDistanceMeters))) miles away")
                                 Text(restaurant.driveDistanceMeters < 1000 ?
                                      "\(restaurant.driveDistanceMeters)m away" :
                                         "\(String(format: "%.1f", Double(restaurant.driveDistanceMeters)/1000))km away")
@@ -171,6 +169,13 @@ struct RestaurantDetailView: View {
         }
         .navigationTitle(restaurant.name)
         .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    // Function that converts the given meters into miles and formating the result to two decimal places
+    func metersToMiles( _ meters: Double) -> String {
+        let miles = meters * 0.000621371
+        let milesValue = String(format: "%.2f", miles)
+        return milesValue
     }
 }
 

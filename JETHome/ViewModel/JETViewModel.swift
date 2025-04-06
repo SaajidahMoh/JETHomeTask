@@ -12,6 +12,9 @@ class JETViewModel : ObservableObject {
     @Published var isLoading: Bool = false
     @Published var restaurantsFound: Bool = false
     
+    private var locationManager = LocationManager()
+    private var apiService = justEatAPIInteraction()
+    
     // Performs the interaction with the API to get the restaurants information
     func fetchRestaurantInfo(){
         guard !postcode.isEmpty else {
@@ -32,6 +35,7 @@ class JETViewModel : ObservableObject {
     
     func updatePostcode(_ postcode : String) {
         self.postcode = postcode
+        locationManager.hasSetPostcode = true
         fetchRestaurantInfo()
     }
 }

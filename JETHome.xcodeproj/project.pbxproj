@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		909A7E552DA1B9C100A791AF /* CategoryItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909A7E542DA1B9C100A791AF /* CategoryItemsView.swift */; };
 		90AF20402D9990430088D06E /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 90AF203F2D9990430088D06E /* Kingfisher */; };
 /* End PBXBuildFile section */
 
@@ -29,7 +28,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		909A7E542DA1B9C100A791AF /* CategoryItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryItemsView.swift; sourceTree = "<group>"; };
 		90AF1F7F2D99837F0088D06E /* JETHome.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JETHome.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		90AF1F8F2D9983800088D06E /* JETHomeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JETHomeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		90AF1F992D9983800088D06E /* JETHomeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JETHomeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -82,7 +80,6 @@
 		90AF1F762D99837F0088D06E = {
 			isa = PBXGroup;
 			children = (
-				909A7E542DA1B9C100A791AF /* CategoryItemsView.swift */,
 				90AF1F812D99837F0088D06E /* JETHome */,
 				90AF1F922D9983800088D06E /* JETHomeTests */,
 				90AF1F9C2D9983800088D06E /* JETHomeUITests */,
@@ -248,7 +245,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				909A7E552DA1B9C100A791AF /* CategoryItemsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

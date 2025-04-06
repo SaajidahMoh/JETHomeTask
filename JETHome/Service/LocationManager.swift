@@ -37,15 +37,9 @@ final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObje
         case .notDetermined://The user choose allow or denny your app to get the location yet
             manager.requestWhenInUseAuthorization()
             
-        case .restricted://The user cannot change this app’s status, possibly due to active restrictions such as parental controls being in place.
-            print("Location restricted")
-            
-        case .denied://The user denied your app to get location or disabled the services location or the phone is in airplane mode
+        case .restricted, .denied: //The user denied your app to get location or disabled the services location or the phone is in airplane mode
             print("Location denied")
             locationDisabledAlert = true
-            
-            //   case .authorizedAlways://This authorization allows you to use all location services and receive location events whether or not your app is in use.
-            //            print("Location authorizedAlways")
             
         case .authorizedWhenInUse, .authorizedAlways://This authorization allows you to use all location services and receive location events only when your app is in use
             //lastKnownLocation = manager.location?.coordinate
@@ -86,7 +80,9 @@ final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObje
             
             if let placemark = placemarks?.first, let postcode = placemark.postalCode {
                 DispatchQueue.main.async {
-                    self?.postcode = postcode
+                    if !self!.hasSetPostcode {
+                        self?.postcode = postcode
+                    }
                 }
             }
         }
