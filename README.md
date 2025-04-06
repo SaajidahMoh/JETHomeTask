@@ -6,7 +6,7 @@
 | Layer            | Responsibility                     | Tools Used                          |
 |------------------|------------------------------------|-------------------------------------|
 | Model Layer      | Data Structures                    | Decodable                           |
-| View Layer       | Display + Interaction              | SwiftUI, Kingfisher, MapKit         |
+| View Layer       | Display + Interaction User View    | SwiftUI, Kingfisher, MapKit         |
 | ViewModel Layer  | Business Logic + State Management  | ObservableObject, @StateObject      |
 | Service Layer    | Networking + Location Services     | URLSession, CLGeocoder, CoreLocation|
 
