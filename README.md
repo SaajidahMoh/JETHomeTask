@@ -108,5 +108,5 @@ I found the assignment clear and was able to reach out to Maria if I had any que
 
 ## Acknowledgements
 - **Maria Harris** - Senior TA Specialist - Early Careers Lead (Tech & Product), for the speedy response to my query.
-- **[Just Eat](https://www.just-eat.co.uk/)** for the API and the images taken to make my application user-friendly.
+- **[Just Eat Takeaway.com](https://www.just-eat.co.uk/)** for the API and the images taken to make my application user-friendly.
 - **[Just Eat's Brand Box](https://brand-box.marketing.just-eat.com)** for the accessible colours that informed my application design.
