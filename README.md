@@ -64,9 +64,11 @@ I found the assignment clear and was able to reach out to Maria if I had any que
 - **Restaurant Data Points**: Must display the restaurant data points with the restaurant names, cuisines, rating as a number (including the number of ratings) and the address (first line + postcode).
 
 ## Features Implemented
+- **Restaurant Data Points**: All restaurant data points with the restaurant names, cuisines, rating as a number (including the number of ratings) and the address (first line + postcode) were effectively displayed, with card details respective to their informaiton. 
 - **Location Search**: Can search for place by seleting on the location button on the top left corner which populates the "Enter Postcode" field with the users current postcode. This would then display the output from the API and sort based on the nearest restaurants. Filters also work.
 - **Decorative Images**: Application pictures were decorative and identified by nearby text, making alt text descriptions not needed for ease for screen readers.
-- **Separated Filters**: Separating things like “deals”, “free delivery”, “halal”, “freebies” from actual cuisine types like "Pizza", "American", "Chicken" etc..
+- **Separated Filters**: Separating things like “deals”, “free delivery”, “halal”, “freebies” from actual cuisine types like "Pizza", "American", "Chicken" etc. given that they are not actual cuisines and for effective filtering capabiltiies to enahnce user experience.
+- **Sorting Restaurants** : Sorting the restuarants, grocieries and other categories in order of nearest. 
 - **Open Restaurants**: Only displaying what is open and near the user in the given API.
 - **Restaurant Data Points**: Displayed the restaurant data points with names, cuisines, rating as a number (including the number of ratings) and the address (first line + postcode).
 
@@ -91,7 +93,7 @@ I found the assignment clear and was able to reach out to Maria if I had any que
 ## Future Improvements
 - **Postcode Validation:** Implement validation for postcode and embedding my NoRestaurantView to show if it was not a valid postcode or no restaurants were found. Whilst I did try to implement this with the AsyncDispatch to perform the tasks asynchronously, there was a problem with showing the NoRestaurantView when it was making the call.
 - **Image Storage:** For my categories and filtering flavours capabiltiies, my images are stored in the application's assets to replicate the JET application. It would be more effective to continue using Kingfisher to retrieve the images from a secure, online database which would take up less storage and improve the applications performance.
-- **Map Integration:** Although I have implemented a map for when users select a restaurant, it would be more beneficial to implement a separate, interactive map for users to view all nearby locations with filtering capabilities.
+- **Map Integration:** Although I have implemented a map for when users select a restaurant, it would be more beneficial to implement a separate, interactive map that can be on a full screen for users to view all nearby locations with filtering capabilities.
 - **Geocoding and Unit Testing:** I implemented reverse geocoding to get the users postcode based on their location (coordinates). However, my application started to glitch later on despite it working perfectly. It would have been more robust if I had more time to learn and effectively apply unit tests, rather than manually running the application each time to test user journey’s and input, which was time-consuming.
 - **Deprecated Code:** Some code is deprecated but still works. It may not be up to date with the latest iOS updates, such as authorizationStatus(), mapAnnotation, and onChange().
 - **Interface Improvement:** Although I used JET’s Brand Box to ensure my application was accessible, I could improve the interface by reducing the amount of information displayed and replacing cuisine types with icons.
@@ -101,8 +103,9 @@ I found the assignment clear and was able to reach out to Maria if I had any que
 - **Search Optimisation:** When I used DispatchQueue.main.asyncAfter, there was a delay in showing the current interface. It would always show that the postcode entered was incorrect, but then show the correct interface a few seconds later. I removed this for better user experience, but it can be improved.
 - **Closed Restaurants:** Allow users to search for closed restaurants with a grey overlay and clearly written "closed" so they are aware.
 - **Enhanced Filtering:** Add more filtering capabilities so users don’t have to scroll back and forth. I could implement a separate lazyVGrid with a search at the top to make it accessible and easy for users. I would also implement other sorting capabilities including customer rating, delivery fee and minimum order for orders that have a minimum requirement.
+- **Display Food Hygiene Rating:** All additional filtering have been implemented and gathered from "uniqueNames", except for "open", "new" and "4+ star". It would have been more effective if I was able to effectively get the restaurant's ID and perform filtering based on the ID. This could further simplify my code as opposed to the large criteria-based filtering. 
 
 ## Acknowledgements
-- **Maria Harris** - Senior TA Specialist - Early Careers Lead (Tech & Product) for the speedy response to my query
-- **[Just Eat](https://www.just-eat.co.uk/)** For the API and the images to make my application user-friendly
-- **[Just Eat's Brand Box](https://brand-box.marketing.just-eat.com)** for the accessible colours that informed my application design
+- **Maria Harris** - Senior TA Specialist - Early Careers Lead (Tech & Product), for the speedy response to my query.
+- **[Just Eat](https://www.just-eat.co.uk/)** for the API and the images taken to make my application user-friendly.
+- **[Just Eat's Brand Box](https://brand-box.marketing.just-eat.com)** for the accessible colours that informed my application design.
