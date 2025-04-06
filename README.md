@@ -49,7 +49,7 @@
 
 ### Device Compatibility
 
-To ensure you are able to test the locaiton and map aspect of the application, it is recommended to run the application instead of the Stimulator. Ensure the Minimum Deployment is set to 17.6 by following the image below:
+To ensure you are able to test the locaiton and map aspect of the application, it is recommended to run the application on an iOS device (preferable an iphone) instead of the Stimulator. Ensure the Minimum Deployment is set to 17.6 by following the image below:
  <img src="https://github.com/user-attachments/assets/708a0a78-b19c-4f07-a0b3-2e2de0b4a3df" alt="DeploymentInstructions" style="width: 90%; height: auto;">
 
 ## Assumptions
