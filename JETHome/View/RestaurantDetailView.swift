@@ -86,7 +86,7 @@ struct RestaurantDetailView: View {
                     HStack {
                         Image(systemName: "location.fill")
                             .foregroundColor(.orange)
-                        Text("\(restaurant.address.firstLine), \(restaurant.address.postalCode)")
+                        Text("\(restaurant.address.firstLine), \(restaurant.address.city), \(restaurant.address.postalCode)")
                             .font(.subheadline)
                     }
                     
