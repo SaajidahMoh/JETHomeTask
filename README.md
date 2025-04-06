@@ -33,7 +33,7 @@
 1. You will need to download this [zip folder](https://github.com/SaajidahMoh/JETHomeTask.git) and unzip it
 2. Download [XCode](https://apps.apple.com/gb/app/xcode/id497799835?mt=12 ) from the App Store. I am currently using version 16.2
 3. Click on the ```JETHome.xcodeproj``` file and it should open in Xcode.
-4. Check the package dependencies to ensure the ```Kingfisher``` is imported. To check this, click on the ```JetHome.xcodeproj``` file. When it take you to Xcode, click on ```JETHome``` [With the blue App Store Icon]. There is another JETHome underneath ‘Project’. Navigate to “Package Dependencies” and ensure that the ```Kingfisher``` is there. If not, you will need to add it by following the image below and selecting the + icon. 
+4. Check the package dependencies to ensure the ```Kingfisher``` is imported. To check this, click on the ```JetHome.xcodeproj``` file. When it take you to Xcode, click on ```JETHome``` [With the blue App Store Icon]. There is another JETHome underneath **'Project'**. Navigate to **'Package Dependencies'** and ensure that the ```Kingfisher``` is there. If not, you will need to add it by following the image below and selecting the + icon. 
 	
   Kingfisher: ```https://github.com/onevcat/Kingfisher``` 
  
