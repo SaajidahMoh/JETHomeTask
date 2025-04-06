@@ -42,9 +42,10 @@ struct RestaurantDetailView: View {
                         HStack(spacing: 4) {
                             Image(systemName: "star.fill")
                                 .foregroundColor(.yellow)
-                            Text(String(format: "%.1f", restaurant.rating.starRating))
+                            Text((formatRating(restaurant.rating.starRating) > "0" ? (formatRating(restaurant.rating.starRating)) : "0"))
                                 .fontWeight(.semibold)
                         }
+                        
                         .padding(6)
                         .background(Color.gray.opacity(0.01))
                         .cornerRadius(6)
@@ -169,6 +170,15 @@ struct RestaurantDetailView: View {
         }
         .navigationTitle(restaurant.name)
         .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    func formatRating( _ rating: Float) -> String {
+        if rating == 0 {
+            return "0"
+        } else {
+            let ratingValue = String(format: "%.2f", rating)
+            return ratingValue.trimmingCharacters(in: CharacterSet(charactersIn: "0").union(.punctuationCharacters))
+        }
     }
     
     // Function that converts the given meters into miles and formating the result to two decimal places

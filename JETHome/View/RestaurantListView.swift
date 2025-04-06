@@ -51,7 +51,7 @@ struct RestaurantListView:View {
                             Image(systemName: "star.fill")
                                 .foregroundColor(.yellow)
                                 .font(.system(size: 12))
-                            Text(formatRating(restaurant.rating.starRating))
+                            Text((formatRating(restaurant.rating.starRating) > "0" ? (formatRating(restaurant.rating.starRating)) : "0"))
                                 .font(.system(size: 16, weight: .medium))
                                 .foregroundColor(.primary)
                             
