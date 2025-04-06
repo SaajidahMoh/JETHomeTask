@@ -39,7 +39,7 @@
  
 <img src="https://github.com/user-attachments/assets/684cbd05-ed7d-421a-ac79-9aabf73ed00c" alt="Kingfisher" style="width: 90%; height: auto;">
 
-5. 	You will need to try to run the code. You should get the following errors: ```Development Team``` in which you will need to add an ```Account```. Sign in with your Apple ID, and add yourself as the development team. Ghis should fix the error.
+5. 	You will need to try to run the code. You should get the following errors: **Development Team** in which you will need to add an **Account**. Sign in with your Apple ID, and add yourself as the development team. Ghis should fix the error.
 7. 	Run the code. You will need to connect your iPhone to the MacBook with a wire and select your phone at the top.
 8. 	You will be prompted to enter your keychain password - Please enter your MacBook password and select **Always allow**. If you select deny or allow once it may not let you continue.
 9. 	You will need to go to your **iPhone settings** -> **General** -> **VPN & Device Management** to verify the Developer app.
@@ -57,9 +57,9 @@ I found the assignment clear and was able to reach out to Maria if I had any que
 - **No User Authentication**: There is no user authentication needed or being able to store/save the users information.
 - **UK Postcodes**: The application will work only using UK postcodes due to the API. 
 - **API Consistency**: The assumption that the API endpoints would be consistent, reliable and would provide real-time updates based on whether a store is open now for collection/delivery.
-- **Categorising "Restaurants"**: The API returned a variety of categories including restaurants, groceries, convenience stores, alcohol shops and electronic stores which doesn't quite fit the "restaurant" theme. An assumption was made to seperate them if one of the categories were contained in their "UniqueNames".
+- **Categorising 'Restaurants'**: The API returned a variety of categories including restaurants, groceries, convenience stores, alcohol shops and electronic stores which doesn't quite fit the **restaurant** theme. An assumption was made to seperate them if one of the categories were contained in their ```UniqueNames```.
 - **Display Restaurants**: Must Display the first 10 restaurants.
-- **Separated Filters**: Separating things like “deals”, ```free delivery```, ```halal```, ```freebies``` from the actual cuisine types like ```Pizza```, ```American```, ```Chicken``` etc. given that they are not actual cuisines.
+- **Separated Filters**: Separating things like ```deals```, ```free delivery```, ```halal```, ```freebies``` from the actual cuisine types like ```Pizza```, ```American```, ```Chicken``` etc. given that they are not actual cuisines.
 - **Brand Box Usage**: Able to use JET’s Brand Box and images from their application, given that this application is not to be published and is between you and JET.
 - **Device Compatibility**: Application must able to be used on any iOS device (and in portrait mode).
 - **Restaurant Data Points**: Must display the restaurant data points with the restaurant names, cuisines, rating as a number (including the number of ratings) and the address (first line and postcode).
