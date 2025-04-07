@@ -101,7 +101,7 @@ struct RestaurantDetailView: View {
                                 LocationMapAnnotationView()
                             }
                         }
-                        .frame(height: 200)
+                        .frame(height: 238)
                         .cornerRadius(10)
                     }
                     
@@ -166,6 +166,7 @@ struct RestaurantDetailView: View {
                 }
                 .padding()
                 .padding(.leading)
+                .padding(.trailing)
             }
         }
         .navigationTitle(restaurant.name)
