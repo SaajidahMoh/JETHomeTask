@@ -65,7 +65,7 @@ class JETViewModel : ObservableObject {
     
     // Filtering the restaurant (based on user's selected criteria)
     var filteredRestaurants : [Restaurant] {
-       restaurants.filter {
+        restaurants.filter {
             restaurant in
             
             // Checking if the restaurant matches either delivery or collection
@@ -124,7 +124,7 @@ class JETViewModel : ObservableObject {
                 return $0.rating.count > $1.rating.count
             } else {
                 return $0.rating.starRating > $1.rating.starRating }
-         //   $0.driveDistanceMeters < $1.driveDistanceMeters}
+            //   $0.driveDistanceMeters < $1.driveDistanceMeters}
         }
     }
     
@@ -135,6 +135,12 @@ class JETViewModel : ObservableObject {
             print ("Enter postcode")
             return
         }
+        
+        guard !postcodeValidation(postcode) else {
+            print ("Invalid Postcode / Postcode is incorrect")
+            return
+        }
+        
         isLoading = true
         
         let APIInteraction = justEatAPIInteraction()
@@ -158,6 +164,12 @@ class JETViewModel : ObservableObject {
         self.postcode = postcode
         locationManager.hasSetPostcode = true
         fetchRestaurantInfo()
+    }
+    
+    func postcodeValidation(_ postcode: String ) -> Bool {
+        let postcodeRegex = "^([A-Za-z]{2}[\\d]{1,2}[A-Za-z]?)[\\s]+([\\d][A-Za-z]{2})$ "
+        let postcodeCheck = NSPredicate(format: "SELF MATCHES %@",postcodeRegex)
+        return postcodeCheck.evaluate(with: postcode)
     }
     
     func sortRestaurant(_ restaurant : [Restaurant]) -> [Restaurant] {
