@@ -17,6 +17,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObje
     var hasSetPostcode = false //ensuring postcode is set once
     @Published var userLocation: CLLocationCoordinate2D?
     @Published var locationDisabledAlert = false
+    @Published var isLocationShared = false
     var locationsManager: CLLocationManager?
     
     var manager = CLLocationManager()
@@ -30,8 +31,8 @@ final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObje
     }
     
     func checkLocationAuthorization() {
-        manager.delegate = self
-        manager.startUpdatingLocation()
+       // manager.delegate = self
+       // manager.startUpdatingLocation()
         
         switch manager.authorizationStatus {
         case .notDetermined://The user choose allow or denny your app to get the location yet
@@ -40,17 +41,20 @@ final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObje
         case .restricted, .denied: //The user denied your app to get location or disabled the services location or the phone is in airplane mode
             print("Location denied")
             locationDisabledAlert = true
+            isLocationShared = false
             
         case .authorizedWhenInUse, .authorizedAlways://This authorization allows you to use all location services and receive location events only when your app is in use
             //lastKnownLocation = manager.location?.coordinate
             // reverseGeocodeLocation (coordinate: lastKnownLocation)
             if let location = manager.location?.coordinate, !hasSetPostcode {
-                reverseGeocodeLocation(coordinate: location)
+             //   reverseGeocodeLocation(coordinate: location)
                 userLocation = location
             }
+            isLocationShared = true
             
         @unknown default:
             print("Location service disabled")
+            isLocationShared = false
         }
     }
     
@@ -61,7 +65,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObje
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         // lastKnownLocation = locations.first?.coordinate
         if let location = manager.location?.coordinate, !hasSetPostcode {
-            reverseGeocodeLocation(coordinate: location)
+         //   reverseGeocodeLocation(coordinate: location)
             userLocation = location
         }
     }
@@ -92,7 +96,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObje
     func checkIfLocationIsEnabled() {
         print ("Checking if enabled")
         // As long as it is not denied, it will show the users current location
-        if CLLocationManager.locationServicesEnabled() && CLLocationManager.authorizationStatus() != .denied {
+        if CLLocationManager.locationServicesEnabled() && manager.authorizationStatus != .denied {
             locationsManager = CLLocationManager()
             locationsManager?.desiredAccuracy = kCLLocationAccuracyBest
             locationsManager!.delegate = self
