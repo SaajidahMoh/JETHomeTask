@@ -10,17 +10,13 @@ import XCTest
 @testable import JETHome
 
 struct JETHomeTests {
-
-    func sortRestaurant(_ restaurant : [Restaurant]) -> [Restaurant] {
-        restaurant.sorted {
-            if $0.rating.starRating == $1.rating.starRating {
-                return $0.rating.count > $1.rating.count
-            } else {
-                return $0.rating.starRating > $1.rating.starRating }
-            //$0.driveDistanceMeters < $1.driveDistanceMeters}
-        }
+    
+    func postcodeValidation(_ postcode: String ) -> Bool {
+        let postcodeRegex = "^([A-Za-z]{2}[\\d]{1,2}[A-Za-z]?)[\\s]+([\\d][A-Za-z]{2})$ "
+        let postcodeCheck = NSPredicate(format: "SELF MATCHES %@",postcodeRegex)
+        return postcodeCheck.evaluate(with: postcode)
     }
-
+    
     @Test func example() async throws {
         let viewModel = JETViewModel()
         let sortingRestaurant : [Restaurant] = [Restaurant(
@@ -120,7 +116,7 @@ struct JETHomeTests {
             isNew: false
         )]
         
-        let sortedRestaurants = sortRestaurant(sortingRestaurant)
+        let sortedRestaurants = viewModel.sortRestaurant(sortingRestaurant)
         
         // Number of sorted restaurants
         XCTAssertEqual(sortedRestaurants.count, 4)
@@ -137,6 +133,19 @@ struct JETHomeTests {
         
         XCTAssertEqual(sortedRestaurants[3].id, "256652")
         XCTAssertEqual(sortedRestaurants[3].name, "Ecco Pizza - Covent Garden")
+        
+        
+        let validPostcodes = ["EC1V 0HB", "EC4M7RF", "CR0  0JS", " BS14DJ", "EN26AJ"]
+        
+        let invalidPostcodes = ["EC1HB", "CR00JSS", "HB12 0jH", "EN128BJ"]
+        
+        for postcode in validPostcodes {
+            XCTAssertTrue(postcodeValidation(postcode), "Valid UK postcode")
+        }
+        
+        for postcode in invalidPostcodes {
+            XCTAssertFalse(postcodeValidation(postcode), "Invalid UK postcode")
+        }
     }
-
+    
 }
